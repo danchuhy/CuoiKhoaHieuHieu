@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.Chair {
+  background: #e9e9e9;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 500;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.Chair:hover {
+  background-color: #e6e6e6;
+}
+.Chair.vipChair {
+  background-color: orange;
+}
+.Chair.vipChair:hover {
+  background-color: #929292;
+  color: #fff;
+}
+
+.Chair.regularChair {
+  background: #e9e9e9;
+}
+.Chair.regularChair:hover {
+  background-color: #929292;
+  color: #fff;
+}
+
+.Chair.booked {
+  pointer-events: none;
+  background-color: rgb(118, 118, 118);
+}
+.Chair.booked:hover {
+  background-color: rgb(118, 118, 118);
+  color: black;
+}
+.Chair.booking {
+  background-color: green;
+}
+.Chair.booking:hover {
+  background-color: rgb(118, 118, 118);
+  color: black;
+}
