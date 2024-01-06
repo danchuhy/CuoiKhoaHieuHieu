@@ -50,11 +50,7 @@ export const addRoomAPI = async (payload) => {
 // DELETE room api
 export const deleteRoomAPI = async (roomID) => {
   try {
-    const response = await fetcher.delete('/QuanLyPhim/XoaPhim', {
-      params: {
-        MaPhim: roomID,
-      },
-    })
+    const response = await fetcher.delete(`/phong-thue/${roomID}`)
     return response.data.content
   } catch (error) {
     throw 'Lỗi rồi'

@@ -8,16 +8,17 @@ const fetcher = axios.create({
   },
 })
 
-// fetcher.interceptors.request.use((config) => {
-//   // console.log('🚀  config:', config)
-//   const user = JSON.parse(localStorage.getItem(CURRENT_USER))
-//   if (user) {
-//     // Thêm Authorization vào header
-//     config.headers['Authorization'] = `Bearer ${user.accessToken}`
-//   }
-//   // console.log('🚀  config:', config)
-//   return config
-// })
+fetcher.interceptors.request.use((config) => {
+  // console.log('🚀  config:', config)
+  const user = JSON.parse(localStorage.getItem(CURRENT_USER))
+  if (user) {
+    // Thêm Authorization vào header
+    // config.headers['Authorization'] = `Bearer ${user.token}`
+    config.headers['Authorization'] = `${token}`
+  }
+  // console.log('🚀  config:', config)
+  return config
+})
 
 // fetcher.interceptors.response.use((response) => {
   // console.log('🚀  response:', response)

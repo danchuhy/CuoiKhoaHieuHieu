@@ -104,8 +104,6 @@ const ListRoomView = () => {
     filterName,
   })
 
-  const notFound = !ListRoom?.length && !!filterName
-
   return (
     <>
       <Container>
@@ -133,9 +131,7 @@ const ListRoomView = () => {
             filterName={filterName}
             onFilterName={handleFilterByName}
           />
-
-          <Scrollbar>
-            <TableContainer sx={{ overflow: 'unset' }}>
+            <TableContainer sx={{ overflow: 'scrollbar' }}>
               <Table sx={{ minWidth: 800 }}>
                 <RoomTableHead
                   order={order}
@@ -155,7 +151,9 @@ const ListRoomView = () => {
                   ]}
                 />
                 <TableBody>
-                  {dataRoom?.map((room, index) => (
+                  {dataRoom
+                  //?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  ?.map((room, index) => (
                     <RoomTableRow
                       key={index}
                       id={room.id}
@@ -168,22 +166,15 @@ const ListRoomView = () => {
                       handleClick={(event) => handleClick(event, user.id)}
                     />
                   ))}
-
-                  {/* <TableEmptyRows
-                  height={77}
-                  emptyRows={emptyRows(page, rowsPerPage, ListRoom?.length)}
-                />
-
-                {notFound && <TableNoData query={filterName} />} */}
                 </TableBody>
               </Table>
             </TableContainer>
-          </Scrollbar>
+         
 
           <TablePagination
-            page={page}
+            page={page || 0}
             component="div"
-            count={ListRoom?.length}
+            count={ListRoom?.length || 0}
             rowsPerPage={rowsPerPage}
             onPageChange={handleChangePage}
             rowsPerPageOptions={[5, 10, 25]}
