@@ -154,14 +154,13 @@ export default function UserPage() {
                 {dataUser?.map((user, index) => (
                   <UserTableRow
                     key={index}
-                    taiKhoan={user.taiKhoan}
-                    hoTen={user.hoTen}
+                    taiKhoan={user.id}
+                    hoTen={user.name}
                     email={user.email}
-                    soDT={user.soDT}
-                    matKhau={user.matKhau}
-                    maLoaiNguoiDung={user.maLoaiNguoiDung}
+                    soDT={user.phone}
+                    maLoaiNguoiDung={user.role}
                     selected={selected.indexOf(user.taiKhoan) !== -1}
-                    handleClick={(event) => handleClick(event, user.taiKhoan)}
+                    handleClick={(event) => handleClick(event, user.id)}
                   />
                 ))}
 
