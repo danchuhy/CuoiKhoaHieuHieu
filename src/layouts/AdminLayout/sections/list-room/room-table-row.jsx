@@ -90,7 +90,7 @@ export default function RoomTableRow({
       denyButtonText: 'Hủy',
     }).then((result) => {
       if (result.isConfirmed) {
-        deleteRoom(id)
+        deleteRoom(roomID)
       }
       return
     })

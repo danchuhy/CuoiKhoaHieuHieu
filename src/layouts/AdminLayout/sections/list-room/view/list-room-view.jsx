@@ -59,18 +59,18 @@ const ListRoomView = () => {
   }
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = ListRoom.map((n) => n.maPhim)
+      const newSelecteds = ListRoom.map((n) => n.id)
       setSelected(newSelecteds)
       return
     }
     setSelected([])
   }
 
-  const handleClick = (event, maPhim) => {
-    const selectedIndex = selected.indexOf(maPhim)
+  const handleClick = (event, id) => {
+    const selectedIndex = selected.indexOf(id)
     let newSelected = []
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, maPhim)
+      newSelected = newSelected.concat(selected, id)
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1))
     } else if (selectedIndex === selected.length - 1) {
@@ -141,7 +141,7 @@ const ListRoomView = () => {
                   onRequestSort={handleSort}
                   onSelectAllClick={handleSelectAllClick}
                   headLabel={[
-                    { id: 'maPhim', label: 'Mã phòng' },
+                    { id: 'id', label: 'Mã phòng' },
                     { id: 'tenPhong', label: 'Tên phòng' },
                     { id: 'hinhAnh', label: 'Hình ảnh' },
                     { id: 'maViTri', label: 'Mã Vị trí' },

@@ -11,12 +11,8 @@ export const getBannersAPI = async () => {
 
 export const getListRoomAPI = async () => {
   try {
-    const response = await fetcher.get('/phong-thue', {
-      // params: {
-      //   maNhom: GROUP_CODE,
-      // },
-    })
-    // console.log('response', response.data.content)
+    const response = await fetcher.get('/phong-thue')
+    console.log('response', response.data.content)
     return response.data.content
   } catch (error) {}
 }
@@ -37,10 +33,9 @@ export const getRoomDetailsAPI = async (roomID) => {
 export const addRoomAPI = async (payload) => {
   try {
     const response = await fetcher.post(
-      '/QuanLyPhim/ThemPhimUploadHinh',
+      '/phong-thue',
       payload
     )
-    // console.log('🚀  response:', response)
     return response.data.content
   } catch (error) {
     throw 'Lỗi rồi'
@@ -69,3 +64,4 @@ export const updateRoomAPI = async (payload) => {
     throw 'Lỗi rồi'
   }
 }
+

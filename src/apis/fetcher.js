@@ -14,7 +14,7 @@ fetcher.interceptors.request.use((config) => {
   if (user) {
     // Thêm Authorization vào header
     // config.headers['Authorization'] = `Bearer ${user.token}`
-    config.headers['Authorization'] = `${token}`
+    config.headers['token'] = user.token
   }
   // console.log('🚀  config:', config)
   return config
