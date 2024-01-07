@@ -40,11 +40,11 @@ const AddRoom = ({ handleClose }) => {
   const queryClient = useQueryClient()
   const { handleSubmit, register, control, setValue, watch } = useForm({
     defaultValues: {
-      id: '',
+      id: 0,
       tenPhong: '',
-      khach: '',
-      phongNgu: '',
-      giuong: '',
+      khach: 0,
+      phongNgu: 0,
+      giuong: 0,
       phongTam: '',
       moTa: '',
       giaTien: '',
@@ -58,11 +58,11 @@ const AddRoom = ({ handleClose }) => {
       hoBoi: false,
       banUi: false,
       maViTri: 0,
-      hinhAnh: '',
+      hinhAnh: 'string',
     },
   })
 
-  const file = watch('hinhAnh') // [0]
+  // const file = watch('hinhAnh') // [0]
 
   // useQuery({queryKey: ['list-room-admin'] })
   const { mutate: handleAddRoom, isPending } = useMutation({
@@ -87,31 +87,24 @@ const AddRoom = ({ handleClose }) => {
   })
 
   const onSubmit = (values) => {
+    // const formData = new FormData()
+    // for (const key in values) {
+    //   if (key !== 'hinhAnh') {
+    //     formData.append(key, values[key])
+    //   } else {
+    //     formData.append('file', values.hinhAnh[0])
+    //   }
+    // } 
     const formData = new FormData()
-    // formData.append('tenPhim', values.tenPhim)
-    // formData.append('trailer', values.trailer)
-    // formData.append('moTa', values.moTa)
-    // formData.append('maNhom', values.maNhom)
-    // formData.append('sapChieu', values.sapChieu)
-    // formData.append('dangChieu', values.dangChieu)
-    // formData.append('hot', values.hot)
-    // formData.append('danhGia', values.danhGia)
-    // formData.append('File', values.hinhAnh[0])
     for (const key in values) {
-      if (key !== 'hinhAnh') {
-        formData.append(key, values[key])
-      } else {
-        formData.append('file', values.hinhAnh[0], values.hinhAnh.name)
-      }
+      formData.append(key, values[key])
     }
-    console.log('formData: ',formData);
-    
     handleAddRoom(formData)
   }
 
-  const previewImage = (file) => {
-    return URL.createObjectURL(file)
-  }
+  // const previewImage = (file) => {
+  //   return URL.createObjectURL(file)
+  // }
 
   // useEffect(() => {
   //   if (file?.length > 0) {
@@ -361,7 +354,7 @@ const AddRoom = ({ handleClose }) => {
                 </Stack> */}
 
 
-                {(!file || file.length === 0) && (
+                {/* {(!file || file.length === 0) && (
                   <Button
                     component="label"
                     variant="contained"
@@ -400,7 +393,7 @@ const AddRoom = ({ handleClose }) => {
                       Xóa hình
                     </Button>
                   </>
-                )}
+                )} */}
 
                 <LoadingButton
                   loading={isPending}
