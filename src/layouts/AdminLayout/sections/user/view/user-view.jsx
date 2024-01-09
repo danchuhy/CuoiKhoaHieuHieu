@@ -156,10 +156,11 @@ export default function UserPage() {
                     key={index}
                     taiKhoan={user.id}
                     hoTen={user.name}
+                    birthday={user.birthday}
                     email={user.email}
                     soDT={user.phone}
                     maLoaiNguoiDung={user.role}
-                    selected={selected.indexOf(user.taiKhoan) !== -1}
+                    selected={selected.indexOf(user.id) !== -1}
                     handleClick={(event) => handleClick(event, user.id)}
                   />
                 ))}

@@ -11,6 +11,9 @@ import {
   FormControlLabel,
   Switch,
   MenuItem,
+  RadioGroup,
+  Radio,
+  FormLabel
 } from '@mui/material'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -20,25 +23,24 @@ import { useForm, Controller } from 'react-hook-form'
 import dayjs from 'dayjs'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { LoadingButton } from '@mui/lab'
-import { GROUP_CODE } from '../../../../../constants'
 import Swal from 'sweetalert2'
 import { addUserApi } from '../../../../../apis/userAPI'
 
 const AddUser = ({ handleClose }) => {
   const queryClient = useQueryClient()
+  const [gender, setGender] = useState('');
   const { handleSubmit, register, control, setValue, watch } = useForm({
     defaultValues: {
-      taiKhoan: '',
-      matKhau: '',
+      name: '',
+      password: '',
       email: '',
-      soDt: '',
-      maNhom: GROUP_CODE,
-      maLoaiNguoiDung: '',
-      hoTen: '',
+      phone: '',
+      gender: gender === 'female' ? true : false,
+      role: '',
+      birthday: ''
     },
   })
 
-  // useQuery({queryKey: ['list-room-admin'] })
   const { mutate: handleAddUser, isPending } = useMutation({
     mutationFn: (payload) => {
       addUserApi(payload)
@@ -61,6 +63,10 @@ const AddUser = ({ handleClose }) => {
     handleAddUser(userInfor)
   }
 
+  const handleGenderChange = (event) => {
+    setGender(event.target.value);
+  };
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box>
@@ -73,23 +79,49 @@ const AddUser = ({ handleClose }) => {
           <Grid item md={6}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Stack spacing={2} direction={'column'}>
-                <TextField
-                  label="Tài khoản"
-                  fullWidth
-                  {...register('taiKhoan')}
+                <TextField label="Họ tên" fullWidth {...register('name')} />
+
+                <FormLabel component="legend">Giới tính</FormLabel>
+                <RadioGroup value={gender} onChange={handleGenderChange} row>
+                  <FormControlLabel value="male" control={<Radio />} label="Male" />
+                  <FormControlLabel value="female" control={<Radio />} label="Female" />
+                </RadioGroup>
+
+                <Controller
+                  control={control}
+                  name="birthday"
+                  render={(field) => {
+                    return (
+                      <DatePicker
+                        label="Ngày sinh"
+                        format="DD/MM/YYYY"
+                        views={[
+                          'day',
+                          'month',
+                          'year'
+                        ]}
+                        onChange={(date) => {
+                          const formattedDate = dayjs(date).format(
+                            'DD/MM/YYYY'
+                          )
+                          setValue('birthday', formattedDate)
+                        }}
+                        {...field}
+                      />
+                    )
+                  }}
                 />
-                <TextField label="Họ tên" fullWidth {...register('hoTen')} />
 
                 <TextField label="Email" fullWidth {...register('email')} />
                 <TextField
                   label="Số điện thoại"
                   fullWidth
-                  {...register('soDt')}
+                  {...register('phone')}
                 />
 
                 <Controller
                   control={control}
-                  name="maLoaiNguoiDung"
+                  name="role"
                   render={({ field }) => {
                     return (
                       <TextField
@@ -98,8 +130,8 @@ const AddUser = ({ handleClose }) => {
                         label="Loại người dùng"
                         {...field}
                       >
-                        <MenuItem value="QuanTri">Quản Trị</MenuItem>
-                        <MenuItem value="KhachHang">Khách Hàng</MenuItem>
+                        <MenuItem value="admin">Admin</MenuItem>
+                        <MenuItem value="user">User</MenuItem>
                       </TextField>
                     )
                   }}
@@ -109,7 +141,7 @@ const AddUser = ({ handleClose }) => {
                   label="Mật khẩu"
                   type="password"
                   fullWidth
-                  {...register('matKhau')}
+                  {...register('password')}
                 />
 
                 <LoadingButton

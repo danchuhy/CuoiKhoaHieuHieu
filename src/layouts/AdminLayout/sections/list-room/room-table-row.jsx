@@ -84,7 +84,7 @@ export default function RoomTableRow({
   const handleDeleteRoom = (roomID) => {
     Swal.fire({
       icon: 'warning',
-      title: 'Bạn có chắc chắn muốn xóa phim này?',
+      title: 'Bạn có chắc chắn muốn xóa phòng này?',
       confirmButtonText: 'Đồng ý',
       showDenyButton: true,
       denyButtonText: 'Hủy',

@@ -16,12 +16,19 @@ import Iconify from '../../components/iconify'
 import { Button, TextField } from '@mui/material'
 import ModalView from '../modal/modal'
 import UserEdit from '../user/edit-user'
+
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { deleteUserApi } from '../../../../apis/userAPI.js'
+import Swal from 'sweetalert2'
+
+
 // ----------------------------------------------------------------------
 
 export default function UserTableRow({
   selected,
   taiKhoan,
   hoTen,
+  birthday,
   email,
   soDT,
   matKhau,
@@ -31,6 +38,7 @@ export default function UserTableRow({
   const userInfor = {
     taiKhoan,
     hoTen,
+    birthday,
     email,
     soDT,
     matKhau,
@@ -38,6 +46,7 @@ export default function UserTableRow({
   }
   const [open, setOpen] = useState(null)
   const [openModal, setOpenModal] = useState(false)
+  const queryClient = useQueryClient()
   const handleOpenModal = () => setOpenModal(true)
   const handleCloseModal = () => setOpenModal(false)
 
@@ -47,6 +56,43 @@ export default function UserTableRow({
 
   const handleCloseMenu = () => {
     setOpen(null)
+  }
+
+  const { mutate: deleteUser, isPending } = useMutation({
+    mutationFn: (userId) => {
+      deleteUserApi(userId)
+    },
+    onSuccess: () => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Xóa người dùng thành công',
+        confirmButtonText: 'Đồng ý',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          queryClient.invalidateQueries('get-list-room')
+        }
+        return
+      })
+    },
+    onError: (error) => {
+      console.log('🚀  error:', error)
+    },
+  })
+
+  const handleDeleteUser = (userId) => {
+    debugger
+    Swal.fire({
+      icon: 'warning',
+      title: 'Bạn có chắc chắn muốn xóa người dùng này?',
+      confirmButtonText: 'Đồng ý',
+      showDenyButton: true,
+      denyButtonText: 'Hủy',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteUser(userId)
+      }
+      return
+    })
   }
 
   return (
@@ -93,7 +139,9 @@ export default function UserTableRow({
           <Button
             sx={{ color: 'error.main' }}
             fullWidth
-            onClick={handleOpenModal}
+            onClick={() => {
+              handleDeleteUser(taiKhoan)
+            }}
           >
             <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
             Delete
@@ -101,7 +149,7 @@ export default function UserTableRow({
         </MenuItem>
       </Popover>
       <ModalView open={openModal} handleClose={handleCloseModal}>
-        <UserEdit userInfor={userInfor} />
+        <UserEdit userInfor={userInfor} handleClose={handleCloseModal}/>
       </ModalView>
     </>
   )
@@ -116,4 +164,5 @@ UserTableRow.propTypes = {
   taiKhoan: PropTypes.any,
   hoTen: PropTypes.any,
   email: PropTypes.string,
+  birthday: PropTypes.string
 }

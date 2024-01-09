@@ -12,7 +12,7 @@ export const getBannersAPI = async () => {
 export const getListRoomAPI = async () => {
   try {
     const response = await fetcher.get('/phong-thue')
-    console.log('response', response.data.content)
+    //console.log('response', response.data.content)
     return response.data.content
   } catch (error) {}
 }

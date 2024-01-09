@@ -11,6 +11,9 @@ import {
   FormControlLabel,
   Switch,
   MenuItem,
+  RadioGroup,
+  Radio,
+  FormLabel
 } from '@mui/material'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -24,27 +27,26 @@ import { GROUP_CODE } from '../../../../../constants'
 import Swal from 'sweetalert2'
 import { editUserApi, infoUserAPI } from '../../../../../apis/userAPI'
 
-const editUser = ({ handleClose, userInfor }) => {
+const editUser = ({handleClose, userInfor }) => {
   const queryClient = useQueryClient()
+  const [gender, setGender] = useState('');
   const { handleSubmit, register, control, setValue, watch } = useForm({
     defaultValues: {
-      taiKhoan: userInfor.taiKhoan || '',
-      matKhau: userInfor.matKhau || '',
+      id: userInfor.taiKhoan || '',
       email: userInfor.email || '',
-      soDt: userInfor.soDt || '',
-      maNhom: GROUP_CODE,
-      maLoaiNguoiDung: userInfor.maLoaiNguoiDung || '',
-      hoTen: userInfor.hoTen || '',
+      phone: userInfor.soDt || '',
+      role: userInfor.maLoaiNguoiDung || '',
+      name: userInfor.hoTen || '',
+      gender: gender === 'female' ? true : false,
+      birthday: userInfor.birthday || ''
     },
   })
 
   useEffect(() => {
-    setValue('matKhau', userInfor.matKhau || '')
     setValue('email', userInfor.email || '')
-    setValue('soDt', userInfor.soDT || '')
-    setValue('maNhom', GROUP_CODE)
-    setValue('maLoaiNguoiDung', userInfor.maLoaiNguoiDung || '')
-    setValue('hoTen', userInfor.hoTen || '')
+    setValue('phone', userInfor.soDT || '')
+    setValue('role', userInfor.maLoaiNguoiDung || '')
+    setValue('name', userInfor.hoTen || '')
   }, [userInfor, setValue, control])
 
   const { mutate: handleEditUser, isPending } = useMutation({
@@ -66,9 +68,12 @@ const editUser = ({ handleClose, userInfor }) => {
     },
   })
   const onSubmit = (userInfor) => {
-    console.log('userInfor submit: ', userInfor)
     handleEditUser(userInfor)
   }
+
+  const handleGenderChange = (event) => {
+    setGender(event.target.value);
+  };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -86,20 +91,50 @@ const editUser = ({ handleClose, userInfor }) => {
                   label="Tài khoản"
                   fullWidth
                   disabled
-                  {...register('taiKhoan')}
+                  {...register('id')}
                 />
-                <TextField label="Họ tên" fullWidth {...register('hoTen')} />
+                <TextField label="Họ tên" fullWidth {...register('name')} />
 
+                <FormLabel component="legend">Giới tính</FormLabel>
+                <RadioGroup value={gender} onChange={handleGenderChange} row>
+                  <FormControlLabel value="male" control={<Radio />} label="Male" />
+                  <FormControlLabel value="female" control={<Radio />} label="Female" />
+                </RadioGroup>
+
+                <Controller
+                  control={control}
+                  name="birthday"
+                  render={(field) => {
+                    return (
+                      <DatePicker
+                        label="Ngày sinh"
+                        format="DD/MM/YYYY"
+                        views={[
+                          'day',
+                          'month',
+                          'year'
+                        ]}
+                        onChange={(date) => {
+                          const formattedDate = dayjs(date).format(
+                            'DD/MM/YYYY'
+                          )
+                          setValue('birthday', formattedDate)
+                        }}
+                        {...field}
+                      />
+                    )
+                  }}
+                />                
                 <TextField label="Email" fullWidth {...register('email')} />
                 <TextField
                   label="Số điện thoại"
                   fullWidth
-                  {...register('soDt')}
+                  {...register('phone')}
                 />
 
                 <Controller
                   control={control}
-                  name="maLoaiNguoiDung"
+                  name="role"
                   render={({ field }) => {
                     return (
                       <TextField
@@ -108,18 +143,11 @@ const editUser = ({ handleClose, userInfor }) => {
                         label="Loại người dùng"
                         {...field}
                       >
-                        <MenuItem value="QuanTri">Quản Trị</MenuItem>
-                        <MenuItem value="KhachHang">Khách Hàng</MenuItem>
+                        <MenuItem value="admin">Quản Trị</MenuItem>
+                        <MenuItem value="user">Khách Hàng</MenuItem>
                       </TextField>
                     )
                   }}
-                />
-
-                <TextField
-                  label="Mật khẩu"
-                  type="password"
-                  fullWidth
-                  {...register('matKhau')}
                 />
 
                 <LoadingButton

@@ -4,12 +4,7 @@ import fetcher from './fetcher'
 export const getListUser = async () => {
   try {
     const response = await fetcher.get(
-      '/users',
-      {
-        // params: {
-        //   maNhom: GROUP_CODE,
-        // },
-      }
+      '/users'
     )
     return response.data.content
   } catch (error) {
@@ -30,7 +25,6 @@ export const signupAPI = async (payload) => {
 export const signinAPI = async (payload) => {
   try {
     const response = await fetcher.post('/auth/signin', payload)
-    // console.log('response: ', response)
     return response.data.content
   } catch (error) {
     throw 'Lỗi rồi'
@@ -39,7 +33,7 @@ export const signinAPI = async (payload) => {
 
 export const addUserApi = async (user) => {
   try {
-    const response = await fetcher.post('/QuanLyNguoiDung/ThemNguoiDung', user)
+    const response = await fetcher.post('/users', user)
     return response.data.content
   } catch (error) {
     throw 'Lỗi rồi'
@@ -47,15 +41,28 @@ export const addUserApi = async (user) => {
 }
 export const editUserApi = async (user) => {
   try {
-    const response = await fetcher.post(
-      '/QuanLyNguoiDung/CapNhatThongTinNguoiDung',
-      user
-    )
+    const response = await fetcher.put(`/users/${user.id}`, user)
     return response.data.content
   } catch (error) {
     throw 'Lỗi rồi'
   }
 }
+
+export const deleteUserApi = async (userID) => {
+  try {
+    debugger
+    const response = await fetcher.delete(`/users`,
+    {
+      params: {
+        id: userID,
+      },
+    })
+    return response.data.content
+  } catch (error) {
+    throw 'Lỗi rồi'
+  }
+}
+
 export const infoUserAPI = async (userId) => {
   try {
     const response = await fetcher.post(

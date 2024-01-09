@@ -67,7 +67,6 @@ const AddRoom = ({ handleClose }) => {
   // useQuery({queryKey: ['list-room-admin'] })
   const { mutate: handleAddRoom, isPending } = useMutation({
     mutationFn: (payload) => {
-      console.log(payload);
       addRoomAPI(payload)
     },
     onSuccess: () => {
@@ -99,7 +98,7 @@ const AddRoom = ({ handleClose }) => {
     for (const key in values) {
       formData.append(key, values[key])
     }
-    handleAddRoom(formData)
+    handleAddRoom(values)
   }
 
   // const previewImage = (file) => {
