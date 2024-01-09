@@ -25,7 +25,6 @@ import UpdateRoom from './update-room/UpdateRoom'
 import CreateTimeRoom from './create-time-room'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import { styled } from '@mui/material/styles'
-import { red } from '@mui/material/colors'
 
 // ----------------------------------------------------------------------
 
@@ -126,6 +125,7 @@ export default function RoomTableRow({
       }).then((result) => {
         if (result.isConfirmed) {
           queryClient.invalidateQueries('get-list-room')
+          setFile('')
         }
       })
     },
@@ -153,6 +153,11 @@ export default function RoomTableRow({
     }
   }
 
+  function checkImageValid(chuoi) {
+    const regexp = /\.(png|gif|jpg)$/i; 
+    return regexp.test(chuoi);
+  }
+
   return (
     <>
       <TableRow hover tabIndex={-1} role="checkbox" selected={selected}>
@@ -165,17 +170,21 @@ export default function RoomTableRow({
         <TableCell>{tenPhong}</TableCell>
 
         <TableCell>
-          <img
-            src={file !== '' ? previewImage(file) : hinhAnh}
-            alt={tenPhong}
-            style={{ width: 160, height: 50 }}
-          />
+          {(checkImageValid(hinhAnh) || file)&&
+            <img
+              src={file !== '' ? previewImage(file) : hinhAnh}
+              alt={tenPhong}
+              style={{ width: 160, height: 50 }}
+            />
+          }
+
 
           {(!file || file.length === 0) && (
             <Button
               component="label"
               variant="contained"
               startIcon={<CloudUploadIcon />}
+              style={{ marginTop: 5, width: 160 }}
             >
               Upload file
               <VisuallyHiddenInput
@@ -197,17 +206,17 @@ export default function RoomTableRow({
               >
               </Box>
               <Button 
-                style={{ color: red }}
                 onClick={() => {
                   onSubmitUpload()
                 }}
               >
-                Tải lên 
+                Lưu hình 
               </Button> |
               <Button
                 onClick={() => {
                   setFile('')
                 }}
+                style={{color: 'red'}}
               >
                 Xóa hình
               </Button>
@@ -253,18 +262,6 @@ export default function RoomTableRow({
           </Button>
         </MenuItem>
 
-        {/* <MenuItem onClick={handleCloseMenu}>
-          <Button
-            fullWidth
-            onClick={() => {
-              handleOpenModal('create')
-            }}
-          >
-            <Iconify icon="eva:plus-outline" sx={{ mr: 2 }} />
-            Tạo lịch chiếu
-          </Button>
-        </MenuItem> */}
-
         <MenuItem onClick={handleCloseMenu}>
           <Button
             sx={{ color: 'error.main' }}
@@ -280,10 +277,8 @@ export default function RoomTableRow({
       </Popover>
 
       <ModalView open={openModal} handleClose={handleCloseModal}>
-        <Typography variant="h4" sx={{ mb: 5 }}>
-          {selectedModal === 'update'
-            ? 'Cập nhật phim upload hình'
-            : `Tạo lịch chiếu cho phim: ${tenPhong}`}
+        <Typography variant="h4" sx={{ mb: 5, textAlign: 'center' }}>
+            Cập nhật thông tin phòng
         </Typography>
         {selectedModal === 'update' ? (
           <UpdateRoom id={id} handleClose={handleCloseModal} />

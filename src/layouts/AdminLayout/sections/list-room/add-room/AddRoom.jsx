@@ -14,13 +14,10 @@ import {
 } from '@mui/material'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { styled } from '@mui/material/styles'
 import { useForm, Controller } from 'react-hook-form'
-import dayjs from 'dayjs'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { LoadingButton } from '@mui/lab'
-import { GROUP_CODE } from '../../../../../constants'
 import { addRoomAPI } from '../../../../../apis/roomAPI'
 import Swal from 'sweetalert2'
 
@@ -62,9 +59,6 @@ const AddRoom = ({ handleClose }) => {
     },
   })
 
-  // const file = watch('hinhAnh') // [0]
-
-  // useQuery({queryKey: ['list-room-admin'] })
   const { mutate: handleAddRoom, isPending } = useMutation({
     mutationFn: (payload) => {
       addRoomAPI(payload)
@@ -86,10 +80,6 @@ const AddRoom = ({ handleClose }) => {
   })
 
   const onSubmit = (values) => {
-    const formData = new FormData()
-    for (const key in values) {
-      formData.append(key, values[key])
-    }
     handleAddRoom(values)
   }
 
@@ -294,87 +284,6 @@ const AddRoom = ({ handleClose }) => {
                 </Stack>
 
                 <TextField label="Mã vị trí" fullWidth {...register('maViTri')} />
-
-
-                {/* <Controller
-                  control={control}
-                  name="ngayKhoiChieu"
-                  render={(field) => {
-                    return (
-                      <DatePicker
-                        label="Ngày chiếu"
-                        format="DD/MM/YYYY"
-                        onChange={(date) => {
-                          const value = dayjs(date).format('DD/MM/YYYY')
-                          setValue('ngayKhoiChieu', value)
-                        }}
-                        {...field}
-                      />
-                    )
-                  }}
-                />
-
-                <Stack direction={'row'} spacing={1}>
-                  <Typography component={'h2'}>Đánh giá:</Typography>
-                  <Controller
-                    control={control}
-                    name="danhGia"
-                    render={() => {
-                      return (
-                        <Rating
-                          name="size-medium"
-                          defaultValue={0}
-                          max={10}
-                          onChange={(event) => {
-                            setValue('danhGia', event.target.defaultValue)
-                          }}
-                        />
-                      )
-                    }}
-                  />
-                </Stack> */}
-
-
-                {/* {(!file || file.length === 0) && (
-                  <Button
-                    component="label"
-                    variant="contained"
-                    startIcon={<CloudUploadIcon />}
-                  >
-                    Upload file
-                    <VisuallyHiddenInput
-                      accept=".png, .gif, .jpg"
-                      type="file"
-                      {...register('hinhAnh')}
-                    />
-                  </Button>
-                )}
-
-                {file?.length > 0 && (
-                  <>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      <img
-                        src={previewImage(file[0])}
-                        width={100}
-                        height={100}
-                      />
-                    </Box>
-
-                    <Button
-                      onClick={() => {
-                        setValue('hinhAnh', undefined)
-                      }}
-                    >
-                      Xóa hình
-                    </Button>
-                  </>
-                )} */}
 
                 <LoadingButton
                   loading={isPending}

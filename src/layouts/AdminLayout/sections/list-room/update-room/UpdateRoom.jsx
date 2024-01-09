@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import Rating from '@mui/material/Rating'
-import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import {
   Box,
   Grid,
   Stack,
   TextField,
   Typography,
-  Button,
-  FormControlLabel,
-  Switch,
+  Checkbox
 } from '@mui/material'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -25,22 +21,11 @@ import {
   getRoomDetailsAPI,
   updateRoomAPI,
 } from '../../../../../apis/roomAPI'
-const VisuallyHiddenInput = styled('input')({
-  clip: 'rect(0 0 0 0)',
-  clipPath: 'inset(50%)',
-  height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  whiteSpace: 'nowrap',
-  width: 1,
-})
 
-const UpdateRoom = ({ maPhim, handleClose }) => {
+const UpdateRoom = ({ id, handleClose }) => {
   const queryClient = useQueryClient()
 
-  // Cập nhật phim
+  // Cập nhật phòng
   const { mutate: handleUpdateRoom, isPending } = useMutation({
     mutationFn: (payload) => {
       updateRoomAPI(payload)
@@ -51,7 +36,7 @@ const UpdateRoom = ({ maPhim, handleClose }) => {
       // Hiển thị thông báo thành công (nếu cần)
       Swal.fire({
         icon: 'success',
-        title: 'Cập nhật phim thành công',
+        title: 'Cập nhật phòng thành công',
         confirmButtonText: 'Ok luôn',
       }).then((result) => {
         if (result.isConfirmed) {
@@ -68,84 +53,61 @@ const UpdateRoom = ({ maPhim, handleClose }) => {
     isError,
     error,
   } = useQuery({
-    queryKey: ['get-room-details', maPhim],
-    queryFn: () => getRoomDetailsAPI(maPhim),
-    enabled: !!maPhim,
+    queryKey: ['get-room-details', id],
+    queryFn: () => getRoomDetailsAPI(id),
+    enabled: !!id,
     // false | true, khi enabled là true thì queryFun mới được kích hoạt. Ngược lại là false thì sẽ không kích hoạt queryFun
   })
 
   const { handleSubmit, register, control, setValue, watch } = useForm({
     defaultValues: {
-      tenPhim: data.tenPhim || '',
-      trailer: data.trailer || '',
+      id: data.id || 0,
+      tenPhong: data.tenPhong || '',
+      khach: data.khach || 0,
+      phongNgu: data.phongNgu || 0,
+      giuong: data.giuong || 0,
+      phongTam: data.phongTam || '',
       moTa: data.moTa || '',
-      maNhom: GROUP_CODE,
-      ngayKhoiChieu: data.ngayKhoiChieu || '',
-      danhGia: data.danhGia || '',
-      dangChieu: data.dangChieu || '',
-      sapChieu: data.sapChieu || '',
-      hot: data.hot || '',
+      giaTien: data.giaTien || '',
+      mayGiat: data.mayGiat || false,
+      banLa: data.banLa || false,
+      tivi: data.tivi || false,
+      dieuHoa: data.dieuHoa || false,
+      wifi: data.wifi || false,
+      bep: data.bep || false,
+      doXe: data.doXe || false,
+      hoBoi: data.hoBoi || false,
+      banUi: data.banUi || false,
+      maViTri: data.maViTri || 0,
       hinhAnh: data.hinhAnh || undefined,
     },
   })
 
   useEffect(() => {
     // Set default values when data changes
-    setValue('tenPhim', data.tenPhim || '')
-    setValue('trailer', data.trailer || '')
-    setValue('moTa', data.moTa || '')
-    setValue('ngayKhoiChieu', data.ngayKhoiChieu || '')
-    setValue('danhGia', data.danhGia || '')
-    setValue('dangChieu', data.dangChieu || '')
-    setValue('sapChieu', data.sapChieu || false)
-    setValue('hot', data.hot || false)
+    setValue('id', data.id || ''),
+    setValue('tenPhong', data.tenPhong || ''),
+    setValue('khach', data.khach || 0),
+    setValue ('phongNgu', data.phongNgu || 0),
+    setValue('giuong', data.giuong || 0),
+    setValue('phongTam', data.phongTam || ''),
+    setValue('moTa', data.moTa || ''),
+    setValue('giaTien', data.giaTien || ''),
+    setValue('mayGiat', data.mayGiat || false),
+    setValue('banLa', data.banLa || false),
+    setValue('tivi', data.tivi || false),
+    setValue('dieuHoa', data.dieuHoa || false),
+    setValue('wifi', data.wifi || false),
+    setValue('bep', data.bep || false),
+    setValue('doXe', data.doXe || false),
+    setValue('hoBoi', data.hoBoi || false),
+    setValue('banUi', data.banUi || false),
+    setValue('maViTri', data.maViTri || 0),
     setValue('hinhAnh', data.hinhAnh || undefined)
   }, [data, setValue, control])
 
-  const [file, setFile] =  useState()
-
-  const handleChange = (event) => {
-    const files = event.target.files[0]
-    setValue('hinhAnh', files)
-    setFile(files)
-  }
-
-  const onSubmitUpdate = (values) => {
-    const formData = new FormData()
-
-    formData.append('maPhim', maPhim)
-    formData.append('tenPhim', values.tenPhim)
-    formData.append('trailer', values.trailer)
-    formData.append('moTa', values.moTa)
-    formData.append('maNhom', GROUP_CODE)
-    formData.append('sapChieu', values.sapChieu)
-    formData.append('dangChieu', values.dangChieu || false)
-    formData.append('hot', values.hot)
-    formData.append('ngayKhoiChieu', values.ngayKhoiChieu)
-    formData.append('danhGia', values.danhGia)
-
-    // Nếu có hình ảnh mới thì mới append vào formData
-    if (file) {
-      formData.append('hinhAnh', values.hinhAnh)
-    }
-
-    handleUpdateRoom(formData)
-  }
-
-  const previewImage = (file) => {
-    // return file ? URL.createObjectURL(new Blob([file])) : ''
-    if (file instanceof File || file instanceof Blob) {
-      return URL.createObjectURL(file)
-    } else if (typeof file === 'string') {
-      return file // Assuming it's already a URL
-    } else {
-      return '' // Handle other cases or return a default URL
-    }
-  }
-
-  const handleDeleteImg = () => {
-    setValue('hinhAnh', undefined)
-    setFile('')
+  const onSubmit = (values) => {
+    handleUpdateRoom(values)
   }
 
   return (
@@ -155,163 +117,204 @@ const UpdateRoom = ({ maPhim, handleClose }) => {
           container
           justifyContent={'center'}
           alignItems={'center'}
-          spacing={3}
+          spacing={1}
         >
-          <Grid item md={6}>
-            <form onSubmit={handleSubmit(onSubmitUpdate)}>
+          <Grid item md={9}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <Stack spacing={2} direction={'column'}>
-                <TextField
-                  label="Tên phim"
-                  fullWidth
-                  {...register('tenPhim')}
-                />
-                <TextField label="Trailer" fullWidth {...register('trailer')} />
+                <TextField label="Tên phòng" fullWidth {...register('tenPhong')} />
+
+                <Stack direction={'row'} spacing={2} alignItems="center">
+                  <TextField label="Khách tối đa" fullWidth {...register('khach')} />
+                  <TextField label="Phòng ngủ" fullWidth {...register('phongNgu')} />
+                </Stack>
+
+                <Stack direction={'row'} spacing={2} alignItems="center">
+                  <TextField label="Giường" fullWidth {...register('giuong')} />
+                  <TextField label="Phòng tắm" fullWidth {...register('phongTam')} />
+                </Stack>
+
                 <TextField label="Mô tả" fullWidth {...register('moTa')} />
-                <Controller
-                  control={control}
-                  name="ngayKhoiChieu"
-                  render={(field) => {
-                    return (
-                      <DatePicker
-                        label="Ngày chiếu"
-                        format="DD/MM/YYYY"
-                        onChange={(date) => {
-                          const formattedDate =
-                            dayjs(date).format('DD/MM/YYYY ~ HH:mm')
-                          setValue('ngayKhoiChieu', formattedDate)
-                        }}
-                        {...field}
-                      />
-                    )
-                  }}
-                />
+                <TextField label="Giá tiền" fullWidth {...register('giaTien')} />
 
-                <Stack direction={'row'} spacing={1}>
-                  <Typography component={'h2'}>Đánh giá:</Typography>
-                  <Controller
-                    control={control}
-                    name="danhGia"
-                    render={({ field }) => (
-                      <Rating
-                        {...field}
-                        name="size-medium"
-                        defaultValue={0}
-                        max={10}
-                        value={parseInt(watch('danhGia'))} // Chuyển đổi giá trị thành số
-                        onChange={(event) => {
-                          setValue('danhGia', event.target.defaultValue)
-                        }}
-                      />
-                    )}
-                  />
-                </Stack>
 
-                <Stack direction={'row'} spacing={1}>
-                  <Typography component={'h2'}>Đang chiếu:</Typography>
-                  <Controller
-                    control={control}
-                    name="dangChieu"
-                    render={() => {
-                      return (
-                        <Switch
-                          checked={watch('dangChieu')}
-                          onChange={(event) => {
-                            setValue('dangChieu', event.target.checked)
-                            setValue('sapChieu', !event.target.checked)
-                          }}
-                        />
-                      )
-                    }}
-                  />
-                </Stack>
-
-                <Stack direction={'row'} spacing={1}>
-                  <Typography component={'h2'}>Sắp chiếu:</Typography>
-                  <Controller
-                    control={control}
-                    name="sapChieu"
-                    render={() => {
-                      return (
-                        <Switch
-                          checked={watch('sapChieu')}
-                          onChange={(event) => {
-                            setValue('sapChieu', event.target.checked)
-                            setValue('dangChieu', !event.target.checked)
-                          }}
-                        />
-                      )
-                    }}
-                  />
-                </Stack>
-
-                <Stack direction={'row'} spacing={1}>
-                  <Typography component={'h2'}>Phim hot:</Typography>
-                  <Controller
-                    control={control}
-                    name="hot"
-                    render={() => {
-                      return (
-                        <Switch
-                          checked={watch('hot')}
-                          onChange={(event) => {
-                            setValue('hot', event.target.checked)
-                          }}
-                        />
-                      )
-                    }}
-                  />
-                </Stack>
-
-                {(!file || file.length === 0) && (
-                  <Button
-                    component="label"
-                    variant="contained"
-                    startIcon={<CloudUploadIcon />}
-                  >
-                    Upload file
-                    <VisuallyHiddenInput
-                      accept=".png, .gif, .jpg"
-                      type="file"
-                      {...register('hinhAnh')}
-                      onChange={handleChange}
+                <Stack direction={'row'} spacing={2} alignItems="center">
+                  <Stack direction={'row'} spacing={1} alignItems="center">
+                    <Typography component={'h2'}>Máy giặt</Typography>
+                    <Controller
+                      control={control}
+                      name="mayGiat"
+                      render={() => {
+                        return (
+                          <Checkbox
+                            checked={watch('mayGiat')}
+                            onChange={(event) => {
+                              setValue('mayGiat', event.target.checked)
+                            }}
+                          />
+                        )
+                      }}
                     />
-                  </Button>
-                )}
+                  </Stack>
 
-                {file && (
-                  <>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
+                  <Stack direction={'row'} spacing={1} alignItems="center">
+                    <Typography component={'h2'}>Bàn là</Typography>
+                    <Controller
+                      control={control}
+                      name="banLa"
+                      render={() => {
+                        return (
+                          <Checkbox
+                            checked={watch('banLa')}
+                            onChange={(event) => {
+                              setValue('banLa', event.target.checked)
+                            }}
+                          />
+                        )
                       }}
-                    >
-                      <img
-                        src={
-                          typeof file === 'string' ? file : previewImage(file)
-                        }
-                        width={100}
-                        height={100}
+                    />
+                  </Stack>
+
+                  <Stack direction={'row'} spacing={1} alignItems="center">
+                    <Typography component={'h2'}>Tivi</Typography>
+                    <Controller
+                      control={control}
+                      name="tivi"
+                      render={() => {
+                        return (
+                          <Checkbox
+                            checked={watch('tivi')}
+                            onChange={(event) => {
+                              setValue('tivi', event.target.checked)
+                            }}
+                          />
+                        )
+                      }}
+                    />
+                  </Stack>
+                </Stack>
+
+                <Stack direction={'row'} spacing={2} alignItems="center">
+                  <Stack direction={'row'} spacing={1} alignItems="center">
+                      <Typography component={'h2'}>Điều hoà</Typography>
+                      <Controller
+                        control={control}
+                        name="dieuHoa"
+                        render={() => {
+                          return (
+                            <Checkbox
+                              checked={watch('dieuHoa')}
+                              onChange={(event) => {
+                                setValue('dieuHoa', event.target.checked)
+                              }}
+                            />
+                          )
+                        }}
                       />
-                    </Box>
-                    <Button
-                      onClick={() => {
-                        handleDeleteImg()
-                      }}
-                    >
-                      Xóa hình
-                    </Button>
-                  </>
-                )}
+                  </Stack>
+
+                  <Stack direction={'row'} spacing={1} alignItems="center">
+                      <Typography component={'h2'}>Wifi</Typography>
+                      <Controller
+                        control={control}
+                        name="wifi"
+                        render={() => {
+                          return (
+                            <Checkbox
+                              checked={watch('wifi')}
+                              onChange={(event) => {
+                                setValue('wifi', event.target.checked)
+                              }}
+                            />
+                          )
+                        }}
+                      />
+                  </Stack>
+
+                  <Stack direction={'row'} spacing={1} alignItems="center">
+                      <Typography component={'h2'}>Bếp</Typography>
+                      <Controller
+                        control={control}
+                        name="bep"
+                        render={() => {
+                          return (
+                            <Checkbox
+                              checked={watch('bep')}
+                              onChange={(event) => {
+                                setValue('bep', event.target.checked)
+                              }}
+                            />
+                          )
+                        }}
+                      />
+                  </Stack>
+                </Stack>
+
+                <Stack direction={'row'} spacing={2} alignItems="center">
+                  <Stack direction={'row'} spacing={1} alignItems="center">
+                      <Typography component={'h2'}>Đỗ xe</Typography>
+                      <Controller
+                        control={control}
+                        name="doXe"
+                        render={() => {
+                          return (
+                            <Checkbox
+                              checked={watch('doXe')}
+                              onChange={(event) => {
+                                setValue('doXe', event.target.checked)
+                              }}
+                            />
+                          )
+                        }}
+                      />
+                  </Stack>
+
+                  <Stack direction={'row'} spacing={1} alignItems="center">
+                      <Typography component={'h2'}>Hồ bơi</Typography>
+                      <Controller
+                        control={control}
+                        name="hoBoi"
+                        render={() => {
+                          return (
+                            <Checkbox
+                              checked={watch('hoBoi')}
+                              onChange={(event) => {
+                                setValue('hoBoi', event.target.checked)
+                              }}
+                            />
+                          )
+                        }}
+                      />
+                  </Stack>
+
+                  <Stack direction={'row'} spacing={1} alignItems="center">
+                      <Typography component={'h2'}>Bàn ủi</Typography>
+                      <Controller
+                        control={control}
+                        name="banUi"
+                        render={() => {
+                          return (
+                            <Checkbox
+                              checked={watch('banUi')}
+                              onChange={(event) => {
+                                setValue('banUi', event.target.checked)
+                              }}
+                            />
+                          )
+                        }}
+                      />
+                  </Stack>
+                </Stack>
+
+                <TextField label="Mã vị trí" fullWidth {...register('maViTri')} />
 
                 <LoadingButton
-                  disabled={isPending}
+                  loading={isPending}
                   variant="contained"
                   size="large"
                   type="submit"
                 >
-                  Cập nhật phim
+                  Cập nhật phòng
                 </LoadingButton>
               </Stack>
             </form>

@@ -19,11 +19,7 @@ export const getListRoomAPI = async () => {
 
 export const getRoomDetailsAPI = async (roomID) => {
   try {
-    const response = await fetcher.get('/QuanLyPhim/LayThongTinPhim', {
-      params: {
-        MaPhim: roomID,
-      },
-    })
+    const response = await fetcher.get(`/phong-thue/${roomID}`)
     // console.log('response', response)
     return response.data.content
   } catch (error) {}
@@ -55,8 +51,8 @@ export const deleteRoomAPI = async (roomID) => {
 // UPDATE room api
 export const updateRoomAPI = async (payload) => {
   try {
-    const response = await fetcher.post(
-      '/QuanLyPhim/CapNhatPhimUpload',
+    const response = await fetcher.put(
+      `/phong-thue/${payload.id}`,
       payload
     )
     return response.data.content
