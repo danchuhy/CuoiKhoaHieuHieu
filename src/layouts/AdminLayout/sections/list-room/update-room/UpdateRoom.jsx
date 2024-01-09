@@ -102,11 +102,12 @@ const UpdateRoom = ({ maPhim, handleClose }) => {
     setValue('hinhAnh', data.hinhAnh || undefined)
   }, [data, setValue, control])
 
-  const file = watch('hinhAnh') // [0]
+  const [file, setFile] =  useState()
 
   const handleChange = (event) => {
-    const file = event.target.files[0]
-    setValue('hinhAnh', file)
+    const files = event.target.files[0]
+    setValue('hinhAnh', files)
+    setFile(files)
   }
 
   const onSubmitUpdate = (values) => {
@@ -140,6 +141,11 @@ const UpdateRoom = ({ maPhim, handleClose }) => {
     } else {
       return '' // Handle other cases or return a default URL
     }
+  }
+
+  const handleDeleteImg = () => {
+    setValue('hinhAnh', undefined)
+    setFile('')
   }
 
   return (
@@ -291,7 +297,7 @@ const UpdateRoom = ({ maPhim, handleClose }) => {
                     </Box>
                     <Button
                       onClick={() => {
-                        setValue('hinhAnh', undefined)
+                        handleDeleteImg()
                       }}
                     >
                       Xóa hình
