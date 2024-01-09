@@ -37,7 +37,7 @@ const editUser = ({handleClose, userInfor }) => {
       phone: userInfor.soDt || '',
       role: userInfor.maLoaiNguoiDung || '',
       name: userInfor.hoTen || '',
-      gender: gender === 'female' ? true : false,
+      gender: gender === 'female',
       birthday: userInfor.birthday || ''
     },
   })

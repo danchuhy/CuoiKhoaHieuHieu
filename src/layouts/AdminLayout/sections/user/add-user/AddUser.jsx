@@ -35,7 +35,7 @@ const AddUser = ({ handleClose }) => {
       password: '',
       email: '',
       phone: '',
-      gender: gender === 'female' ? true : false,
+      gender: gender === 'female',
       role: '',
       birthday: ''
     },
