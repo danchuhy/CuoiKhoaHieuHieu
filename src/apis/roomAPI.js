@@ -65,3 +65,14 @@ export const updateRoomAPI = async (payload) => {
   }
 }
 
+// Upload images room api
+export const uploadHinhPhongApi = async (payload, id) => {
+  try {
+    const response = await fetcher.post(`/phong-thue/upload-hinh-phong?maphong=${id}`, payload
+    )
+    return response.data.content
+  } catch (error) {
+    throw 'Lỗi rồi'
+  }
+}
+

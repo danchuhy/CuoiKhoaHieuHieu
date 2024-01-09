@@ -86,30 +86,12 @@ const AddRoom = ({ handleClose }) => {
   })
 
   const onSubmit = (values) => {
-    // const formData = new FormData()
-    // for (const key in values) {
-    //   if (key !== 'hinhAnh') {
-    //     formData.append(key, values[key])
-    //   } else {
-    //     formData.append('file', values.hinhAnh[0])
-    //   }
-    // } 
     const formData = new FormData()
     for (const key in values) {
       formData.append(key, values[key])
     }
     handleAddRoom(values)
   }
-
-  // const previewImage = (file) => {
-  //   return URL.createObjectURL(file)
-  // }
-
-  // useEffect(() => {
-  //   if (file?.length > 0) {
-  //     previewImage(file?.[0]) // url
-  //   }
-  // }, [file])
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>

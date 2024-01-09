@@ -10,18 +10,22 @@ import MenuItem from '@mui/material/MenuItem'
 import TableCell from '@mui/material/TableCell'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
+import Box from '@mui/material/Box'
 
 import Label from '../../components/label'
 import Iconify from '../../components/iconify'
 import { Button } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { deleteRoomAPI } from '../../../../apis/roomAPI'
+import { deleteRoomAPI, uploadHinhPhongApi } from '../../../../apis/roomAPI'
 import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom'
 import ModalView from '../modal/modal'
 import AddRoom from './add-room/AddRoom'
 import UpdateRoom from './update-room/UpdateRoom'
 import CreateTimeRoom from './create-time-room'
+import CloudUploadIcon from '@mui/icons-material/CloudUpload'
+import { styled } from '@mui/material/styles'
+import { red } from '@mui/material/colors'
 
 // ----------------------------------------------------------------------
 
@@ -42,6 +46,19 @@ export default function RoomTableRow({
   const queryClient = useQueryClient()
 
   const [openModal, setOpenModal] = useState(false)
+  const [file, setFile] = useState('')
+
+  const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+  })
 
   const handleOpenModal = (modalType) => {
     setOpenModal(true)
@@ -96,6 +113,46 @@ export default function RoomTableRow({
     })
   }
 
+  const { mutate: handleUploadHinhPhong } = useMutation({
+    mutationFn: (payload) => {
+      uploadHinhPhongApi(payload, id)
+    },
+    onSuccess: () => {
+      // Hiển thị thông báo thành công (nếu cần)
+      Swal.fire({
+        icon: 'success',
+        title: 'Thêm phòng thành công',
+        confirmButtonText: 'Ok luôn',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          queryClient.invalidateQueries('get-list-room')
+        }
+      })
+    },
+  })
+
+  const onSubmitUpload = () => {
+    const formData = new FormData()
+    if (file !== ''){
+      formData.append('formFile', file)
+    }
+    handleUploadHinhPhong(formData)
+  }
+
+  const handleChangeImg = (e) => {
+    setFile(e.target.files[0])
+  }
+
+  const previewImage = (file) => {
+    if (file instanceof File || file instanceof Blob) {
+      return URL.createObjectURL(file)
+    } else if (typeof file === 'string') {
+      return file 
+    } else {
+      return '' 
+    }
+  }
+
   return (
     <>
       <TableRow hover tabIndex={-1} role="checkbox" selected={selected}>
@@ -109,10 +166,54 @@ export default function RoomTableRow({
 
         <TableCell>
           <img
-            src={hinhAnh}
+            src={file !== '' ? previewImage(file) : hinhAnh}
             alt={tenPhong}
             style={{ width: 160, height: 50 }}
           />
+
+          {(!file || file.length === 0) && (
+            <Button
+              component="label"
+              variant="contained"
+              startIcon={<CloudUploadIcon />}
+            >
+              Upload file
+              <VisuallyHiddenInput
+                accept=".png, .gif, .jpg"
+                type="file"
+                onChange={handleChangeImg}
+              />
+            </Button>
+          )}
+
+          {file && (
+            <>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+              </Box>
+              <Button 
+                style={{ color: red }}
+                onClick={() => {
+                  onSubmitUpload()
+                }}
+              >
+                Tải lên 
+              </Button> |
+              <Button
+                onClick={() => {
+                  setFile('')
+                }}
+              >
+                Xóa hình
+              </Button>
+            </>
+          )}
+
         </TableCell>
 
         <TableCell>{maViTri}</TableCell>
@@ -152,7 +253,7 @@ export default function RoomTableRow({
           </Button>
         </MenuItem>
 
-        <MenuItem onClick={handleCloseMenu}>
+        {/* <MenuItem onClick={handleCloseMenu}>
           <Button
             fullWidth
             onClick={() => {
@@ -162,7 +263,7 @@ export default function RoomTableRow({
             <Iconify icon="eva:plus-outline" sx={{ mr: 2 }} />
             Tạo lịch chiếu
           </Button>
-        </MenuItem>
+        </MenuItem> */}
 
         <MenuItem onClick={handleCloseMenu}>
           <Button
