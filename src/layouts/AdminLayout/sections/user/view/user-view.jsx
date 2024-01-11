@@ -87,8 +87,9 @@ export default function UserPage() {
   }
 
   const handleChangeRowsPerPage = (event) => {
-    setPage(0)
     setRowsPerPage(parseInt(event.target.value, 10))
+    console.log(rowsPerPage)
+    setPage(0)
   }
 
   const handleFilterByName = (event) => {
@@ -103,7 +104,8 @@ export default function UserPage() {
   })
 
   const notFound = !userList?.length && !!filterName
-
+ console.log(page)
+ console.log(rowsPerPage)
   return (
     <Container>
       <Stack
@@ -131,7 +133,7 @@ export default function UserPage() {
           onFilterName={handleFilterByName}
         />
 
-        <Scrollbar>
+        {/* <Scrollbar> */}
           <TableContainer sx={{ overflow: 'unset' }}>
             <Table sx={{ minWidth: 800 }}>
               <UserTableHead
@@ -151,7 +153,8 @@ export default function UserPage() {
                 ]}
               />
               <TableBody>
-                {dataUser?.map((user, index) => (
+                {dataUser?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((user, index) => (
                   <UserTableRow
                     key={index}
                     taiKhoan={user.id}
@@ -174,7 +177,7 @@ export default function UserPage() {
               </TableBody>
             </Table>
           </TableContainer>
-        </Scrollbar>
+        {/* </Scrollbar> */}
 
         <TablePagination
           page={page}

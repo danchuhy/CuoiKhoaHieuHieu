@@ -174,7 +174,7 @@ export default function RoomTableRow({
             <img
               src={file !== '' ? previewImage(file) : hinhAnh}
               alt={tenPhong}
-              style={{ width: 160, height: 50 }}
+              style={{ width: 160, height: 50 , display: 'block'}}
             />
           }
 

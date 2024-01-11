@@ -49,8 +49,8 @@ export function applyFilter({ inputData, comparator, filterName }) {
 
   if (filterName) {
     inputData = inputData.filter(
-      (user) =>
-        user.hoTen.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
+      (booking) =>
+      booking.maPhong.toString().toLowerCase().indexOf(filterName.toLowerCase()) !== -1
     )
   }
 

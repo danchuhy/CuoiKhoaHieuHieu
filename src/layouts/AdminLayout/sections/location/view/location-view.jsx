@@ -151,7 +151,7 @@ const LocationView = () => {
                 />
                 <TableBody>
                   {dataLocation
-                  //?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   ?.map((location, index) => (
                     <LocationTableRow
                       key={index}

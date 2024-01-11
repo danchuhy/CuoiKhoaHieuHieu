@@ -140,7 +140,8 @@ export default function BookingPage() {
                 ]}
               />
               <TableBody>
-                {dataBooking?.map((booking, index) => (
+                {dataBooking?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((booking, index) => (
                   <BookingTableRow
                     key={index}
                     id={booking.id}

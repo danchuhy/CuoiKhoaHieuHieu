@@ -151,8 +151,7 @@ const ListRoomView = () => {
                   ]}
                 />
                 <TableBody>
-                  {dataRoom
-                  //?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  {dataRoom?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   ?.map((room, index) => (
                     <RoomTableRow
                       key={index}
