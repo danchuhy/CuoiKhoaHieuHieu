@@ -29,6 +29,14 @@ const navConfig = [
     path: 'list-room',
   },
   {
+    title: 'Quản lý đặt phòng',
+    path: 'booking',
+  },
+  {
+    title: 'Danh sách vị trí',
+    path: 'location',
+  },
+  {
     title: 'Not found',
     path: '404',
     // icon: icon('ic_disabled'),

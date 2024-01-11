@@ -7,7 +7,8 @@ export const IndexPage = lazy(() => import('../pages/app'))
 // export const BlogPage = lazy(() => import('../pages/blog'))
 export const UserPage = lazy(() => import('../pages/user'))
 export const ListRoomPage = lazy(() => import('../pages/list-room'))
-// export const RoomPage = lazy(() => import('../pages/RoomManagement'))
+export const BookingPage = lazy(() => import('../pages/booking'))
+export const LocationPage = lazy(() => import('../pages/location'))
 export const Page404 = lazy(() => import('../pages/page-not-found'))
 
 // ----------------------------------------------------------------------
@@ -27,6 +28,9 @@ export default function Router() {
         { path: 'user', element: <UserPage /> },
         // { path: 'add-room', element: <RoomPage /> },
         { path: 'list-room', element: <ListRoomPage /> },
+        { path: 'booking', element: <BookingPage /> },
+        { path: 'location', element: <LocationPage /> },
+
       ],
     },
     // {

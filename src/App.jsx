@@ -17,6 +17,9 @@ import NotFoundPage from './layouts/AdminLayout/sections/error/not-found-view.js
 import UserPage from './layouts/AdminLayout/pages/user.jsx'
 import ThemeProvider from './theme'
 import ListRoom from './layouts/AdminLayout/pages/list-room.jsx'
+import Booking from './layouts/AdminLayout/pages/booking.jsx'
+import Location from './layouts/AdminLayout/pages/location.jsx'
+
 
 function App() {
   return (
@@ -37,6 +40,8 @@ function App() {
               <Route path="user" element={<UserPage />} />
               {/* <Route path="add-room" element={<RoomPage />} /> */}
               <Route path="list-room" element={<ListRoom />} />
+              <Route path="booking" element={<Booking />} />
+              <Route path="location" element={<Location />} />
               <Route path="404" element={<NotFoundPage />} />
             </Route>
 

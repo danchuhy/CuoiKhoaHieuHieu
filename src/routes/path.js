@@ -7,5 +7,6 @@ export const PATH = {
   SIGN_IN: '/sign-in',
   SIGN_UP: 'sign-up',
   HISTORY_TICKET: '/history-ticket',
+  BOOKING: '/booking'
   //...
 }
