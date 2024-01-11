@@ -37,7 +37,7 @@ export default function RoomTableToolbar({
         <OutlinedInput
           value={filterName}
           onChange={onFilterName}
-          placeholder="Tìm kiếm tên phim..."
+          placeholder="Tìm kiếm phòng..."
           startAdornment={
             <InputAdornment position="start">
               <Iconify

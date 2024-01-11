@@ -37,7 +37,7 @@ export default function LocationTableToolbar({
         <OutlinedInput
           value={filterName}
           onChange={onFilterName}
-          placeholder="Tìm kiếm tên phim..."
+          placeholder="Tìm kiếm vị trí..."
           startAdornment={
             <InputAdornment position="start">
               <Iconify
