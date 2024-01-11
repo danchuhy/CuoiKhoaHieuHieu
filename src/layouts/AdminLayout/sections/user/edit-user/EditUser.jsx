@@ -26,11 +26,26 @@ import { LoadingButton } from '@mui/lab'
 import { GROUP_CODE } from '../../../../../constants'
 import Swal from 'sweetalert2'
 import { editUserApi, infoUserAPI } from '../../../../../apis/userAPI'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+
+const schema = yup.object({
+  name: yup
+    .string()
+    .required('Vui lòng nhập thông tin'),
+  email: yup.string().required('Vui lòng nhập thông tin'),
+  phone: yup.string()
+    .matches(/^[0-9]+$/, 'Số điện thoại chỉ được chứa các ký tự số')
+    .min(10, 'Số điện thoại phải có ít nhất 10 số')
+    .max(12, 'Số điện thoại không được quá 12 số')
+    .required('Vui lòng nhập số điện thoại'),
+  birthday: yup.date().required('Vui lòng nhập thông tin'),
+})
 
 const editUser = ({handleClose, userInfor }) => {
   const queryClient = useQueryClient()
   const [gender, setGender] = useState('');
-  const { handleSubmit, register, control, setValue, watch } = useForm({
+  const { handleSubmit, register, control, setValue, watch, formState: { errors } } = useForm({
     defaultValues: {
       id: userInfor.taiKhoan || '',
       email: userInfor.email || '',
@@ -40,6 +55,7 @@ const editUser = ({handleClose, userInfor }) => {
       gender: gender === 'female',
       birthday: userInfor.birthday || ''
     },
+    resolver: yupResolver(schema),
   })
 
   useEffect(() => {
@@ -93,7 +109,12 @@ const editUser = ({handleClose, userInfor }) => {
                   disabled
                   {...register('id')}
                 />
-                <TextField label="Họ tên" fullWidth {...register('name')} />
+                <TextField label="Họ tên" fullWidth {...register('name')}
+                  error={Boolean(errors.name)}
+                  helperText={
+                    Boolean(errors.name) && errors.name.message
+                  }
+                />
 
                 <FormLabel component="legend">Giới tính</FormLabel>
                 <RadioGroup value={gender} onChange={handleGenderChange} row>
@@ -104,6 +125,10 @@ const editUser = ({handleClose, userInfor }) => {
                 <Controller
                   control={control}
                   name="birthday"
+                  error={Boolean(errors.birthday)}
+                  helperText={
+                    Boolean(errors.birthday) && errors.birthday.message
+                  }
                   render={(field) => {
                     return (
                       <DatePicker
@@ -125,10 +150,19 @@ const editUser = ({handleClose, userInfor }) => {
                     )
                   }}
                 />                
-                <TextField label="Email" fullWidth {...register('email')} />
+                <TextField label="Email" fullWidth {...register('email')}
+                  error={Boolean(errors.email)}
+                  helperText={
+                    Boolean(errors.email) && errors.email.message
+                  }
+                />
                 <TextField
                   label="Số điện thoại"
                   fullWidth
+                  error={Boolean(errors.phone)}
+                  helperText={
+                    Boolean(errors.phone) && errors.phone.message
+                  }
                   {...register('phone')}
                 />
 

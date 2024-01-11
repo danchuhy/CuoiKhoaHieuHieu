@@ -20,6 +20,14 @@ import {
   getLocationDetailsAPI,
   updateLocationAPI,
 } from '../../../../../apis/locationAPI'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+
+const schema = yup.object({
+  tenViTri: yup.string().required('Vui lòng nhập vị trí'),
+  tinhThanh: yup.string().required('Vui lòng nhập tỉnh thành'),
+  quocGia: yup.string().required('Vui lòng nhập quốc gia'),
+})
 
 const UpdateLocation = ({ locationInfor, handleClose }) => {
   const queryClient = useQueryClient()
@@ -45,7 +53,7 @@ const UpdateLocation = ({ locationInfor, handleClose }) => {
     },
   })
 
-  const { handleSubmit, register, control, setValue, watch } = useForm({
+  const { handleSubmit, register, control, setValue, watch, formState: { errors }} = useForm({
     defaultValues: {
       id: locationInfor.id || 0,
       tenViTri: locationInfor.tenViTri || '',
@@ -53,6 +61,7 @@ const UpdateLocation = ({ locationInfor, handleClose }) => {
       quocGia: locationInfor.quocGia || '',
       hinhAnh: locationInfor.hinhAnh || '',
     },
+    resolver: yupResolver(schema)
   })
 
   useEffect(() => {
@@ -81,9 +90,33 @@ const UpdateLocation = ({ locationInfor, handleClose }) => {
             <form onSubmit={handleSubmit(onSubmit)}>
               <Stack spacing={2} direction={'column'}>
                 <TextField label="Mã vị trí" fullWidth disabled {...register('id')} />
-                <TextField label="Tên vị trí" fullWidth {...register('tenViTri')} />
-                <TextField label="Tỉnh thành" fullWidth {...register('tinhThanh')} />
-                <TextField label="Quốc gia" fullWidth {...register('quocGia')} />
+                <TextField
+                  label="Tên vị trí"
+                  fullWidth
+                  {...register('tenViTri')}
+                  error={Boolean(errors.tenViTri)}
+                  helperText={
+                    Boolean(errors.tenViTri) && errors.tenViTri.message
+                  }
+                />
+                <TextField l
+                  abel="Tỉnh thành"
+                  fullWidth
+                  {...register('tinhThanh')}
+                  error={Boolean(errors.tinhThanh)}
+                  helperText={
+                    Boolean(errors.tinhThanh) && errors.tinhThanh.message
+                  }
+                />
+                <TextField
+                  label="Quốc gia"
+                  fullWidth
+                  {...register('quocGia')}
+                  error={Boolean(errors.quocGia)}
+                  helperText={
+                    Boolean(errors.quocGia) && errors.quocGia.message
+                  }
+                />
 
                 <LoadingButton
                   loading={isPending}

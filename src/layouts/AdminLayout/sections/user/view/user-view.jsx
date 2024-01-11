@@ -104,8 +104,7 @@ export default function UserPage() {
   })
 
   const notFound = !userList?.length && !!filterName
- console.log(page)
- console.log(rowsPerPage)
+
   return (
     <Container>
       <Stack

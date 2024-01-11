@@ -20,6 +20,18 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { LoadingButton } from '@mui/lab'
 import { addRoomAPI } from '../../../../../apis/roomAPI'
 import Swal from 'sweetalert2'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+
+const schema = yup.object({
+  tenPhong: yup.string().required('Vui lòng nhập thông tin'),
+  khach: yup.string().matches(/^[0-9]+$/, 'Chỉ được chứa các ký tự số'),
+  phongNgu: yup.string().matches(/^[0-9]+$/, 'Chỉ được chứa các ký tự số'),
+  giuong: yup.string().matches(/^[0-9]+$/, 'Chỉ được chứa các ký tự số'),
+  phongTam: yup.string().matches(/^[0-9]+$/, 'Chỉ được chứa các ký tự số'),
+  moTa: yup.string().required('Vui lòng nhập thông tin'),
+  giaTien: yup.string().matches(/^[0-9]+$/, 'Chỉ được chứa các ký tự số'),
+})
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -35,7 +47,7 @@ const VisuallyHiddenInput = styled('input')({
 
 const AddRoom = ({ handleClose }) => {
   const queryClient = useQueryClient()
-  const { handleSubmit, register, control, setValue, watch } = useForm({
+  const { handleSubmit, register, control, setValue, watch, formState: { errors } } = useForm({
     defaultValues: {
       id: 0,
       tenPhong: '',
@@ -57,6 +69,7 @@ const AddRoom = ({ handleClose }) => {
       maViTri: 0,
       hinhAnh: 'string',
     },
+    resolver: yupResolver(schema),
   })
 
   const { mutate: handleAddRoom, isPending } = useMutation({
@@ -98,22 +111,55 @@ const AddRoom = ({ handleClose }) => {
                 <TextField
                   label="Tên phòng"
                   fullWidth
+                  error={Boolean(errors.tenPhong)}
+                  helperText={
+                    Boolean(errors.tenPhong) && errors.tenPhong.message
+                  }
                   {...register('tenPhong')}
                 />
 
                 <Stack direction={'row'} spacing={2} alignItems="center">
-                  <TextField label="Khách tối đa" fullWidth {...register('khach')} />
-                  <TextField label="Phòng ngủ" fullWidth {...register('phongNgu')} />
+                  <TextField label="Khách tối đa" fullWidth {...register('khach')}
+                    error={Boolean(errors.khach)}
+                    helperText={
+                      Boolean(errors.khach) && errors.khach.message
+                    } 
+                    />
+                  <TextField label="Phòng ngủ" fullWidth {...register('phongNgu')}
+                    error={Boolean(errors.phongNgu)}
+                    helperText={
+                      Boolean(errors.phongNgu) && errors.phongNgu.message
+                    }
+                  />
                 </Stack>
 
                 <Stack direction={'row'} spacing={2} alignItems="center">
-                  <TextField label="Giường" fullWidth {...register('giuong')} />
-                  <TextField label="Phòng tắm" fullWidth {...register('phongTam')} />
+                  <TextField label="Giường" fullWidth {...register('giuong')}
+                    error={Boolean(errors.giuong)}
+                    helperText={
+                      Boolean(errors.giuong) && errors.giuong.message
+                    }
+                  />
+                  <TextField label="Phòng tắm" fullWidth {...register('phongTam')}
+                    error={Boolean(errors.phongTam)}
+                    helperText={
+                      Boolean(errors.phongTam) && errors.phongTam.message
+                    }
+                  />
                 </Stack>
 
-                <TextField label="Mô tả" fullWidth {...register('moTa')} />
-                <TextField label="Giá tiền" fullWidth {...register('giaTien')} />
-
+                <TextField label="Mô tả" fullWidth {...register('moTa')}
+                  error={Boolean(errors.moTa)}
+                  helperText={
+                    Boolean(errors.moTa) && errors.moTa.message
+                  }
+                />
+                <TextField label="Giá tiền" fullWidth {...register('giaTien')}
+                  error={Boolean(errors.giaTien)}
+                  helperText={
+                    Boolean(errors.giaTien) && errors.giaTien.message
+                  }
+                />
 
                 <Stack direction={'row'} spacing={2} alignItems="center">
                   <Stack direction={'row'} spacing={1} alignItems="center">

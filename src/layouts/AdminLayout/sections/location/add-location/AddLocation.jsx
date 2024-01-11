@@ -12,17 +12,26 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { LoadingButton } from '@mui/lab'
 import { addLocationAPI } from '../../../../../apis/locationAPI'
 import Swal from 'sweetalert2'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+
+const schema = yup.object({
+  tenViTri: yup.string().required('Vui lòng nhập thông tin'),
+  tinhThanh: yup.string().required('Vui lòng nhập thông tin'),
+  quocGia: yup.string().required('Vui lòng nhập thông tin'),
+})
 
 const AddLocation = ({ handleClose }) => {
   const queryClient = useQueryClient()
-  const { handleSubmit, register, control, setValue, watch } = useForm({
+  const { handleSubmit, register, control, setValue, watch, formState: { errors } } = useForm({
     defaultValues: {
       id: 0,
-      tenViTri: '',
+      ç: '',
       tinhThanh: '',
       quocGia: '',
       hinhAnh: ''
     },
+    resolver: yupResolver(schema),
   })
 
   const { mutate: handleAddLocation, isPending } = useMutation({
@@ -61,9 +70,33 @@ const AddLocation = ({ handleClose }) => {
           <Grid item md={6}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Stack spacing={2} direction={'column'}>
-                <TextField label="Tên vị trí" fullWidth {...register('tenViTri')} />
-                <TextField label="Tỉnh thành" fullWidth {...register('tinhThanh')} />
-                <TextField label="Quốc gia" fullWidth {...register('quocGia')} />
+                <TextField
+                  label="Tên vị trí"
+                  fullWidth
+                  {...register('tenViTri')}
+                  error={Boolean(errors.tenViTri)}
+                  helperText={
+                    Boolean(errors.tenViTri) && errors.tenViTri.message
+                  }
+                />
+                <TextField l
+                  abel="Tỉnh thành"
+                  fullWidth
+                  {...register('tinhThanh')}
+                  error={Boolean(errors.tinhThanh)}
+                  helperText={
+                    Boolean(errors.tinhThanh) && errors.tinhThanh.message
+                  }
+                />
+                <TextField
+                  label="Quốc gia"
+                  fullWidth
+                  {...register('quocGia')}
+                  error={Boolean(errors.quocGia)}
+                  helperText={
+                    Boolean(errors.quocGia) && errors.quocGia.message
+                  }
+                />
 
                 <LoadingButton
                   loading={isPending}

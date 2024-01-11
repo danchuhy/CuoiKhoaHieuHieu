@@ -22,6 +22,19 @@ import {
   updateRoomAPI,
 } from '../../../../../apis/roomAPI'
 
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+
+const schema = yup.object({
+  tenPhong: yup.string().required('Vui lòng nhập thông tin'),
+  khach: yup.string().matches(/^[0-9]+$/, 'Chỉ được chứa các ký tự số'),
+  phongNgu: yup.string().matches(/^[0-9]+$/, 'Chỉ được chứa các ký tự số'),
+  giuong: yup.string().matches(/^[0-9]+$/, 'Chỉ được chứa các ký tự số'),
+  phongTam: yup.string().matches(/^[0-9]+$/, 'Chỉ được chứa các ký tự số'),
+  moTa: yup.string().required('Vui lòng nhập thông tin'),
+  giaTien: yup.string().matches(/^[0-9]+$/, 'Chỉ được chứa các ký tự số'),
+})
+
 const UpdateRoom = ({ id, handleClose }) => {
   const queryClient = useQueryClient()
 
@@ -59,7 +72,7 @@ const UpdateRoom = ({ id, handleClose }) => {
     // false | true, khi enabled là true thì queryFun mới được kích hoạt. Ngược lại là false thì sẽ không kích hoạt queryFun
   })
 
-  const { handleSubmit, register, control, setValue, watch } = useForm({
+  const { handleSubmit, register, control, setValue, watch , formState: { errors } } = useForm({
     defaultValues: {
       id: data.id || 0,
       tenPhong: data.tenPhong || '',
@@ -81,6 +94,7 @@ const UpdateRoom = ({ id, handleClose }) => {
       maViTri: data.maViTri || 0,
       hinhAnh: data.hinhAnh || undefined,
     },
+    resolver: yupResolver(schema)
   })
 
   useEffect(() => {
@@ -122,21 +136,58 @@ const UpdateRoom = ({ id, handleClose }) => {
           <Grid item md={9}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Stack spacing={2} direction={'column'}>
-                <TextField label="Tên phòng" fullWidth {...register('tenPhong')} />
+              <TextField
+                  label="Tên phòng"
+                  fullWidth
+                  error={Boolean(errors.tenPhong)}
+                  helperText={
+                    Boolean(errors.tenPhong) && errors.tenPhong.message
+                  }
+                  {...register('tenPhong')}
+                />
 
                 <Stack direction={'row'} spacing={2} alignItems="center">
-                  <TextField label="Khách tối đa" fullWidth {...register('khach')} />
-                  <TextField label="Phòng ngủ" fullWidth {...register('phongNgu')} />
+                  <TextField label="Khách tối đa" fullWidth {...register('khach')}
+                    error={Boolean(errors.khach)}
+                    helperText={
+                      Boolean(errors.khach) && errors.khach.message
+                    } 
+                    />
+                  <TextField label="Phòng ngủ" fullWidth {...register('phongNgu')}
+                    error={Boolean(errors.phongNgu)}
+                    helperText={
+                      Boolean(errors.phongNgu) && errors.phongNgu.message
+                    }
+                  />
                 </Stack>
 
                 <Stack direction={'row'} spacing={2} alignItems="center">
-                  <TextField label="Giường" fullWidth {...register('giuong')} />
-                  <TextField label="Phòng tắm" fullWidth {...register('phongTam')} />
+                  <TextField label="Giường" fullWidth {...register('giuong')}
+                    error={Boolean(errors.giuong)}
+                    helperText={
+                      Boolean(errors.giuong) && errors.giuong.message
+                    }
+                  />
+                  <TextField label="Phòng tắm" fullWidth {...register('phongTam')}
+                    error={Boolean(errors.phongTam)}
+                    helperText={
+                      Boolean(errors.phongTam) && errors.phongTam.message
+                    }
+                  />
                 </Stack>
 
-                <TextField label="Mô tả" fullWidth {...register('moTa')} />
-                <TextField label="Giá tiền" fullWidth {...register('giaTien')} />
-
+                <TextField label="Mô tả" fullWidth {...register('moTa')}
+                  error={Boolean(errors.moTa)}
+                  helperText={
+                    Boolean(errors.moTa) && errors.moTa.message
+                  }
+                />
+                <TextField label="Giá tiền" fullWidth {...register('giaTien')}
+                  error={Boolean(errors.giaTien)}
+                  helperText={
+                    Boolean(errors.giaTien) && errors.giaTien.message
+                  }
+                />
 
                 <Stack direction={'row'} spacing={2} alignItems="center">
                   <Stack direction={'row'} spacing={1} alignItems="center">

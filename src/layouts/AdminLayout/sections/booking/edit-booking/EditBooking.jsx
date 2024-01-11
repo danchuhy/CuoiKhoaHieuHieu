@@ -30,7 +30,7 @@ import { editBookingApi } from '../../../../../apis/bookingAPI'
 const editBooking = ({handleClose, bookingInfor }) => {
   const queryClient = useQueryClient()
   const [gender, setGender] = useState('');
-  const { handleSubmit, register, control, setValue, watch } = useForm({
+  const { handleSubmit, register, control, setValue, watch, formState: { errors },} = useForm({
     defaultValues: {
       id: bookingInfor.id,
       maPhong: bookingInfor.maPhong || 0 ,
