@@ -37,7 +37,7 @@ export default function BookingTableToolbar({
         <OutlinedInput
           value={filterName}
           onChange={onFilterName}
-          placeholder="Search user..."
+          placeholder="Search booking..."
           startAdornment={
             <InputAdornment position="start">
               <Iconify
