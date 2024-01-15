@@ -30,6 +30,7 @@ export default function UserTableRow({
   hoTen,
   birthday,
   email,
+  gender,
   soDT,
   matKhau,
   maLoaiNguoiDung,
@@ -40,6 +41,7 @@ export default function UserTableRow({
     hoTen,
     birthday,
     email,
+    gender,
     soDT,
     matKhau,
     maLoaiNguoiDung,
@@ -110,7 +112,7 @@ export default function UserTableRow({
 
         <TableCell>{soDT}</TableCell>
 
-        <TableCell>{maLoaiNguoiDung}</TableCell>
+        <TableCell>{maLoaiNguoiDung.toLowerCase()}</TableCell>
 
         <TableCell align="right">
           <IconButton onClick={handleOpenMenu}>
@@ -149,6 +151,9 @@ export default function UserTableRow({
         </MenuItem>
       </Popover>
       <ModalView open={openModal} handleClose={handleCloseModal}>
+        <Typography variant="h4" sx={{ mb: 5, textAlign: 'center' }}>
+          Cập nhật thông tin người dùng
+        </Typography>
         <UserEdit userInfor={userInfor} handleClose={handleCloseModal}/>
       </ModalView>
     </>

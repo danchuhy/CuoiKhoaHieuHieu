@@ -48,6 +48,8 @@ export default function UserPage() {
     queryFn: () => getListUser(),
   })
 
+  console.log(userList)
+
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === 'asc'
     if (id !== '') {
@@ -161,6 +163,7 @@ export default function UserPage() {
                     birthday={user.birthday}
                     email={user.email}
                     soDT={user.phone}
+                    gender={user.gender}
                     maLoaiNguoiDung={user.role}
                     selected={selected.indexOf(user.id) !== -1}
                     handleClick={(event) => handleClick(event, user.id)}
@@ -190,7 +193,7 @@ export default function UserPage() {
       </Card>
 
       <ModalView open={open} handleClose={handleClose}>
-        <Typography variant="h4" sx={{ mb: 5 }}>
+        <Typography variant="h4" sx={{ mb: 5, textAlign: 'center' }}>
           Thêm người dùng
         </Typography>
         <AddUser handleClose={handleClose} />

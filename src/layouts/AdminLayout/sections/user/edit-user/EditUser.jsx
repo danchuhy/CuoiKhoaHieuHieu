@@ -44,26 +44,25 @@ const schema = yup.object({
 
 const editUser = ({handleClose, userInfor }) => {
   const queryClient = useQueryClient()
-  const [gender, setGender] = useState('');
-  console.log(userInfor);
+  const [gender, setGender] = useState(userInfor.gender);
   const { handleSubmit, register, control, setValue, watch, formState: { errors } } = useForm({
     defaultValues: {
       id: userInfor.taiKhoan || '',
       email: userInfor.email || '',
       phone: userInfor.soDt || '',
-      role: userInfor.maLoaiNguoiDung || '',
+      role: userInfor.maLoaiNguoiDung.toLowerCase() || 'user',
       name: userInfor.hoTen || '',
-      gender: gender === 'female',
+      gender: userInfor.gender,
       birthday: userInfor.birthday || ''
     },
     resolver: yupResolver(schema),
   })
-
   useEffect(() => {
     setValue('email', userInfor.email || '')
     setValue('phone', userInfor.soDT || '')
-    setValue('role', userInfor.maLoaiNguoiDung || '')
+    setValue('role', userInfor.maLoaiNguoiDung.toLowerCase() || '')
     setValue('name', userInfor.hoTen || '')
+    setValue('birthday', userInfor.birthday || '')
   }, [userInfor, setValue, control])
 
   const { mutate: handleEditUser, isPending } = useMutation({
@@ -118,7 +117,7 @@ const editUser = ({handleClose, userInfor }) => {
                 />
 
                 <FormLabel component="legend">Giới tính</FormLabel>
-                <RadioGroup value={gender} onChange={handleGenderChange} row>
+                <RadioGroup value={gender ? 'female' : 'male'} onChange={handleGenderChange} row>
                   <FormControlLabel value="male" control={<Radio />} label="Male" />
                   <FormControlLabel value="female" control={<Radio />} label="Female" />
                 </RadioGroup>
