@@ -110,7 +110,7 @@ export default function BookingPage() {
         justifyContent="space-between"
         mb={5}
       >
-        <Typography variant="h4">Booking management</Typography>
+        <Typography variant="h4">Quản lý đặt phòng</Typography>
       </Stack>
 
       <Card>

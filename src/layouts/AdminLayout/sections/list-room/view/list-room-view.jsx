@@ -113,7 +113,7 @@ const ListRoomView = () => {
           justifyContent="space-between"
           mb={5}
         >
-          <Typography variant="h4">Room management</Typography>
+          <Typography variant="h4">Quản lý phòng</Typography>
 
           <Button
             variant="contained"
@@ -184,7 +184,7 @@ const ListRoomView = () => {
 
       <ModalView open={open} handleClose={handleClose}>
         <Typography variant="h4" sx={{ mb: 5 }}>
-          Thêm phim upload hình
+          Thêm phòng
         </Typography>
         {/* <Scrollbar sx={{ height: { xs: 340, sm: 'auto' } }}>
         </Scrollbar> */}

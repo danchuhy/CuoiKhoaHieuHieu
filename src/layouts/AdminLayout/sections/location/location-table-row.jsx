@@ -88,7 +88,7 @@ export default function LocationTableRow({
     onSuccess: () => {
       Swal.fire({
         icon: 'success',
-        title: 'Xóa phim thành công',
+        title: 'Xóa vị trí thành công',
         confirmButtonText: 'Đồng ý',
       }).then((result) => {
         if (result.isConfirmed) {

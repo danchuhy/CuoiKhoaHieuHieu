@@ -83,7 +83,7 @@ export default function RoomTableRow({
     onSuccess: () => {
       Swal.fire({
         icon: 'success',
-        title: 'Xóa phim thành công',
+        title: 'Xóa phòng thành công',
         confirmButtonText: 'Đồng ý',
       }).then((result) => {
         if (result.isConfirmed) {
@@ -120,7 +120,7 @@ export default function RoomTableRow({
       // Hiển thị thông báo thành công (nếu cần)
       Swal.fire({
         icon: 'success',
-        title: 'Thêm phòng thành công',
+        title: 'Thêm hình thành công',
         confirmButtonText: 'Ok luôn',
       }).then((result) => {
         if (result.isConfirmed) {

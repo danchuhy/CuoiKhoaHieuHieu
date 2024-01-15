@@ -45,6 +45,7 @@ const schema = yup.object({
 const editUser = ({handleClose, userInfor }) => {
   const queryClient = useQueryClient()
   const [gender, setGender] = useState('');
+  console.log(userInfor);
   const { handleSubmit, register, control, setValue, watch, formState: { errors } } = useForm({
     defaultValues: {
       id: userInfor.taiKhoan || '',

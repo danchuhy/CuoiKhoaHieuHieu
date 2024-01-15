@@ -113,7 +113,7 @@ const LocationView = () => {
           justifyContent="space-between"
           mb={5}
         >
-          <Typography variant="h4">Location management</Typography>
+          <Typography variant="h4">Quản lý vị trí</Typography>
 
           <Button
             variant="contained"
@@ -183,7 +183,7 @@ const LocationView = () => {
 
       <ModalView open={open} handleClose={handleClose}>
         <Typography variant="h4" sx={{ mb: 5 }}>
-          Thêm phim upload hình
+          Thêm vị trí
         </Typography>
         {/* <Scrollbar sx={{ height: { xs: 340, sm: 'auto' } }}>
         </Scrollbar> */}

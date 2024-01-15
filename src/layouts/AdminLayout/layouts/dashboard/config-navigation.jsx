@@ -35,12 +35,7 @@ const navConfig = [
   {
     title: 'Danh sách vị trí',
     path: 'location',
-  },
-  {
-    title: 'Not found',
-    path: '404',
-    // icon: icon('ic_disabled'),
-  },
+  }
 ]
 
 export default navConfig

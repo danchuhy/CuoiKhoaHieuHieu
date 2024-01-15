@@ -113,7 +113,7 @@ export default function UserPage() {
         justifyContent="space-between"
         mb={5}
       >
-        <Typography variant="h4">Users management</Typography>
+        <Typography variant="h4">Quản lý tài khoản</Typography>
 
         <Button
           variant="contained"
@@ -141,9 +141,9 @@ export default function UserPage() {
                 rowCount={userList?.length}
                 numSelected={selected.length}
                 onRequestSort={handleSort}
-                onSelectAllClick={handleSelectAllClick}
+                onSelectAllClick={handleSelectAllClick} 
                 headLabel={[
-                  { id: 'taiKhoan', label: 'Tài khoản' },
+                  { id: 'taiKhoan', label: 'ID' },
                   { id: 'hoTen', label: 'Họ tên' },
                   { id: 'email', label: 'Email' },
                   { id: 'soDT', label: 'Số điện thoại' },
