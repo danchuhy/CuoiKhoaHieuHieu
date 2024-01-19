@@ -5,11 +5,26 @@ import { Button } from "@mui/material";
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 import img from "../../../assets/pngwing.com (2).png";
 import Modal from "react-bootstrap/Modal";
+import { useMutation } from "@tanstack/react-query";
+import { uploadAvatarApi } from "../../../apis/userAPI";
 const OrderAvatar = ({ data }) => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [formFile, setFormFile] = useState(null);
+  const { mutate } = useMutation({
+    mutationFn: (value) => uploadAvatarApi(value),
+    onSuccess: () => {
+      window.location.reload();
+    },
+  });
+  const handleUpload = () => {
+    handleClose();
+    if (formFile) {
+      mutate(formFile);
+    }
+  };
   return (
     <div id="profile">
       <div className="profile-head">
@@ -40,13 +55,13 @@ const OrderAvatar = ({ data }) => {
           <Modal.Title>Cập nhật avatar</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <input type="file" />
+          <input type="file" onChange={(e) => setFormFile(e.target.files[0])} />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             hủy bỏ
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={handleUpload}>
             Lưu thay đổi
           </Button>
         </Modal.Footer>

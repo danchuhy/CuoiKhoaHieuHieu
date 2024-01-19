@@ -90,3 +90,12 @@ export const getInforUserApi = async(id) =>{
   }
 }
 
+export const uploadAvatarApi = async (payload) =>{
+  console.log(payload)
+  try {
+    const respone = await fetcher.post("/users/upload-avatar",payload)
+    return respone.data.content
+  } catch (error) {
+    throw 'Lỗi rồi'
+  }
+}
