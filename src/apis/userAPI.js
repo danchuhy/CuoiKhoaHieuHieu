@@ -1,3 +1,4 @@
+
 import { GROUP_CODE } from '../constants'
 import fetcher from './fetcher'
 
@@ -91,9 +92,11 @@ export const getInforUserApi = async(id) =>{
 }
 
 export const uploadAvatarApi = async (payload) =>{
-  console.log(payload)
+ 
   try {
-    const respone = await fetcher.post("/users/upload-avatar",payload)
+    const data = new FormData()
+    data.append("formFile",payload)
+    const respone = await fetcher.post("/users/upload-avatar",data)
     return respone.data.content
   } catch (error) {
     throw 'Lỗi rồi'
