@@ -34,6 +34,7 @@ import {
   upDateOrderRoomApi,
   updateRoomAPI,
 } from "../../apis/roomAPI";
+import OrderAvatar from "./OrderAvatar";
 
 const Profile = () => {
   useEffect(() => {
@@ -129,38 +130,7 @@ const Profile = () => {
         <Container>
           <Row>
             <Col lg={3}>
-              <div id="profile">
-                <div className="profile-head">
-                  <img src={data.avatar == "" ? img : data.avatar} alt="" />
-                  <a onClick={() => fileRef.current.click()} href="#!">
-                    Cập nhật ảnh
-                  </a>
-                  <input
-                    ref={fileRef}
-                    style={{ display: "none" }}
-                    type="file"
-                    onChange={(e) => setFile(e.target.files[0])}
-                  />
-                </div>
-                <div className="profile-body">
-                  <div className="profile-body-icon">
-                    <GppGoodOutlinedIcon />
-                  </div>
-                  <div className="profile-body-text">
-                    <h3>Xác thực danh tính</h3>
-                    <p>
-                      Xác thực danh tính của bạn với huy hiệu xác minh danh tính
-                    </p>
-                    <Button variant="outlined">Nhận huy hiệu</Button>
-                  </div>
-                </div>
-                <div className="profile-bot">
-                  <h3>{data.name} đã xác nhận </h3>
-                  <p>
-                    <CheckOutlinedIcon /> Địa chỉ email
-                  </p>
-                </div>
-              </div>
+              <OrderAvatar data={data}></OrderAvatar>
             </Col>
             <Col>
               <div id="profile-right">

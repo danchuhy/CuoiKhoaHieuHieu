@@ -97,6 +97,7 @@ const Comments = ({ data, room, submit }) => {
           <div className="add-comment mt-5 mb-5">
             <div className="add-comment-avatar">
               <img
+                style={{ borderRadius: "50%", objectFit: "cover" }}
                 src={user.user.avatar == "" ? img : user.user.avatar}
                 alt=""
               />
