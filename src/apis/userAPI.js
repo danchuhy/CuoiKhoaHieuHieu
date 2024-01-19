@@ -18,7 +18,7 @@ export const signupAPI = async (payload) => {
     const response = await fetcher.post('/auth/signup', payload)
     return response.data.content
   } catch (error) {
-    throw 'Lỗi'
+    return error
   }
 }
 
@@ -27,7 +27,7 @@ export const signinAPI = async (payload) => {
     const response = await fetcher.post('/auth/signin', payload)
     return response.data.content
   } catch (error) {
-    throw 'Lỗi rồi'
+    return error;
   }
 }
 
@@ -43,6 +43,7 @@ export const editUserApi = async (user) => {
   try {
     const response = await fetcher.put(`/users/${user.id}`, user)
     return response.data.content
+   
   } catch (error) {
     throw 'Lỗi rồi'
   }
@@ -79,3 +80,13 @@ export const infoUserAPI = async (userId) => {
     throw 'Lỗi rồi'
   }
 }
+
+export const getInforUserApi = async(id) =>{
+  try {
+    const respone = await fetcher.get(`/users/${id}`)
+    return  respone.data.content
+  } catch (error) {
+    throw 'Lỗi rồi'
+  }
+}
+

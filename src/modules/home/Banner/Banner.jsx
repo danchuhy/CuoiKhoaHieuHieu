@@ -1,64 +1,25 @@
-import { useQuery } from '@tanstack/react-query'
-import React from 'react'
-import { getBannersAPI } from '../../../apis/roomAPI'
-import Carousel from 'react-material-ui-carousel'
-import { Box, Skeleton } from '@mui/material'
+import React from "react";
+import Carousel from "react-bootstrap/Carousel";
+import video from "../../../assets/Amanwana - Luxury Resort & Hotel in Indonesia - Aman.mp4";
+import "./banner.scss";
+import { Button } from "@mui/material";
 const Banner = () => {
-  const {
-    data = [],
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ['banner'],
-    queryFn: getBannersAPI,
-  })
-
-  // console.log('Data', data)
-  // console.log('isLoading', isLoading)
-  // console.log('isError', isError)
-
-  const settings = {
-    // dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
-  }
-
-  if (isLoading) {
-    return (
-      <Skeleton
-        variant="rectangular"
-        sx={{ height: 'auto' }}
-        animation="wave"
-      ></Skeleton>
-    )
-  }
-
   return (
-    <Carousel>
-      {data.map((item) => {
-        return (
-          <Box
-            key={item.maBanner}
-            style={{
-              minHeight: '400px',
-              objectFit: 'cover',
-            }}
-          >
-            <img
-              src={item.hinhAnh}
-              style={{ width: '100%' }}
-              alt={item.maPhim}
-            />
-          </Box>
-        )
-      })}
-    </Carousel>
-  )
-}
+    <div id="banner">
+      <video
+        style={{ width: "100%", height: "80vh", objectFit: "cover" }}
+        src={video}
+        autoPlay
+        loop
+        muted
+      ></video>
+      <div className="banner-text">
+        <h1>Welcome to AirBnB</h1>
+        <p>Bao gồm những thành phố lớn với dịch vụ và phong cảnh tuyệt nhất</p>
+        <Button variant="contained">Khám phá ngay</Button>
+      </div>
+    </div>
+  );
+};
 
-export default Banner
+export default Banner;
