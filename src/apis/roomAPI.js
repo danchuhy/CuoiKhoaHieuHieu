@@ -72,3 +72,55 @@ export const uploadHinhPhongApi = async (payload, id) => {
   }
 }
 
+export const getCommentRoom =async (id) =>{
+  try {
+    const response = await fetcher.get(`/binh-luan/lay-binh-luan-theo-phong/${id}`
+    )
+    
+    return response.data.content
+  } catch (error) {
+    throw 'Lỗi rồi'
+  }
+}
+export const postComment = async(payload) =>{
+  try {
+    const response = await fetcher.post(`/binh-luan`,payload)
+    return response
+  } catch (error) {
+    throw 'Lỗi rồi'
+  }
+}
+
+export const orderRoomApi = async (payload) =>{
+  try {
+    const response = await fetcher.post("/dat-phong",payload)
+    return response.data.content
+  } catch (error) {
+    return error
+  }
+}
+export const getOrderRoomApi = async (id) =>{
+  try {
+    const respone = await fetcher.get(`/dat-phong/lay-theo-nguoi-dung/${id}`)
+    return respone.data.content
+  } catch (error) {
+    throw 'Lỗi rồi'
+  }
+}
+export const upDateOrderRoomApi= async (id,payload) =>{
+  try {
+    const response = await fetcher.put(`/dat-phong/${id}`,payload)
+    return response
+  } catch (error) {
+    throw 'Lỗi rồi'
+  }
+}
+export const deleteOrderRoomApi = async (id) =>{
+  try {
+    const respone = await fetcher.delete(`/dat-phong/${id}`)
+    return respone
+     } catch (error) {
+      throw 'Lỗi rồi'
+  }
+
+}

@@ -1,144 +1,99 @@
-import { useQuery } from '@tanstack/react-query'
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import Slider from 'react-slick'
-import { getListRoomAPI } from '../../../apis/roomAPI'
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Grid,
-  Typography,
-  Container,
-} from '@mui/material'
-
+import { useQuery } from "@tanstack/react-query";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Slider from "react-slick";
+import { getListRoomAPI } from "../../../apis/roomAPI";
+import "./showing.scss";
+import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
+import { Col, Container, Row } from "react-bootstrap";
+import IronIcon from "@mui/icons-material/Iron";
+import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
+import SoupKitchenIcon from "@mui/icons-material/SoupKitchen";
+import BedIcon from "@mui/icons-material/Bed";
+import PoolIcon from "@mui/icons-material/Pool";
+import BathroomIcon from "@mui/icons-material/Bathroom";
 const Showing = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['list-room'],
+    queryKey: ["list-room"],
     queryFn: getListRoomAPI,
-  })
+  });
   const settings = {
-    className: 'center',
+    className: "center",
     centerMode: true,
     infinite: true,
     autoplay: true,
-    centerPadding: '60px',
+    centerPadding: "60px",
     slidesToShow: 3,
     speed: 500,
     autoplaySpeed: 2000,
+  };
+  console.log(data);
+  const handleClick = (id) => {
+    navigate(`/room/${id}`);
+  };
+
+  if (!isLoading) {
+    return (
+      <div id="showing">
+        <Container>
+          <h2 className="showing-title">Ở bất kỳ đâu</h2>
+          <Row>
+            {data.map((item) => {
+              return (
+                <Col lg={4} md={6} sm={12} style={{ marginBottom: "30px" }}>
+                  <Card
+                    style={{ minWidth: "20rem" }}
+                    onClick={() => {
+                      handleClick(item.id);
+                    }}
+                  >
+                    <Card.Img variant="top" src={item.hinhAnh} />
+                    <Card.Body>
+                      <Card.Title>
+                        {item.tenPhong.substring(0, 30) + "..."}
+                      </Card.Title>
+                      <Card.Title className="convice">
+                        <div className="convice-item">
+                          <IronIcon fontSize="small" color="disabled" />
+                        </div>
+                        <div className="convice-item">
+                          <DirectionsCarIcon
+                            fontSize="small"
+                            color="disabled"
+                          />
+                        </div>
+                        <div className="convice-item">
+                          <SoupKitchenIcon fontSize="small" color="disabled" />
+                        </div>
+                        <div className="convice-item">
+                          <BedIcon fontSize="small" color="disabled" />
+                        </div>
+                        <div className="convice-item">
+                          <PoolIcon fontSize="small" color="disabled" />
+                        </div>
+                        <div className="convice-item">
+                          <BathroomIcon fontSize="small" color="disabled" />
+                        </div>
+                      </Card.Title>
+                      <Card.Text className="mota">
+                        {item.moTa.substring(0, 40) + "..."}
+                      </Card.Text>
+                      <Card.Text className="price">
+                        {item.giaTien}.00$ / Đêm
+                      </Card.Text>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              );
+            })}
+          </Row>
+        </Container>
+      </div>
+    );
   }
+};
 
-  return (
-    // <Grid container spacing={4}>
-    //   {data?.map((item) => {
-    //     return (
-    //       <Grid item xs={3} key={item.maPhim}>
-    //         <Card>
-    //           <CardMedia
-    //             sx={{ height: 180 }}
-    //             image={item.hinhAnh}
-    //             title={item.tenPhim}
-    //           />
-    //           <CardContent>
-    //             <Typography
-    //               gutterBottom
-    //               variant="h5"
-    //               component="div"
-    //               className="truncate"
-    //             >
-    //               {item.tenPhim}
-    //             </Typography>
-    //             <Typography
-    //               variant="body2"
-    //               color="text.secondary"
-    //               className="truncate truncate--2"
-    //             >
-    //               {item.moTa}
-    //             </Typography>
-    //           </CardContent>
-    //           <CardActions>
-    //             <Button
-    //               size="large"
-    //               variant="contained"
-    //               fullWidth
-    //               onClick={() => {
-    //                 navigate(`room/${item.maPhim}`)
-    //               }}
-    //             >
-    //               Xem chi tiết
-    //             </Button>
-    //           </CardActions>
-    //         </Card>
-    //       </Grid>
-    //     )
-    //   })}
-    // </Grid>
-    <Container maxWidth="lg">
-      <Slider {...settings}>
-        {data?.map((item) => {
-          return (
-            <Grid sx={{ padding: '10px' }} key={item.maPhim}>
-              <Grid item>
-                <Card sx={{ width: 314 }}>
-                  {/* <CardMedia
-                    sx={{
-                      minHeight: '100%',
-                      width: '100%',
-                    }}
-                    image={item.hinhAnh}
-                    title={item.tenPhim}
-                  /> */}
-                  <img
-                    src={item.hinhAnh}
-                    alt={item.tenPhim}
-                    style={{
-                      height: '314px',
-                      width: '100%',
-                      objectFit: 'cover',
-                      display: 'block',
-                    }}
-                  />
-                  <CardContent>
-                    <Typography
-                      gutterBottom
-                      variant="h5"
-                      component="div"
-                      className="truncate"
-                    >
-                      {item.tenPhim}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      className="truncate truncate--2"
-                    >
-                      {item.moTa}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button
-                      size="large"
-                      variant="contained"
-                      fullWidth
-                      onClick={() => {
-                        navigate(`room/${item.maPhim}`)
-                      }}
-                    >
-                      Xem chi tiết
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            </Grid>
-          )
-        })}
-      </Slider>
-    </Container>
-  )
-}
-
-export default Showing
+export default Showing;

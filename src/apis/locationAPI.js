@@ -61,3 +61,15 @@ export const uploadLocationImageApi = async (payload, id) => {
   }
 }
 
+export const getRoomWithLocation = async(id) =>{
+  try {
+    const response = await fetcher.get("/phong-thue/lay-phong-theo-vi-tri",{
+      params:{
+        maViTri:id
+      }
+    })
+    return response.data.content
+  } catch (error) {
+    throw 'Lỗi rồi'
+  }
+} 
