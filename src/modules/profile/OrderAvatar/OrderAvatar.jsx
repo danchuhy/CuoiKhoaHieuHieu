@@ -5,11 +5,37 @@ import { Button } from "@mui/material";
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 import img from "../../../assets/pngwing.com (2).png";
 import Modal from "react-bootstrap/Modal";
+import { useMutation } from "@tanstack/react-query";
+import { updataAvatarApi } from "../../../apis/userAPI";
+import Swal from "sweetalert2";
 const OrderAvatar = ({ data }) => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [file, setFile] = useState(null);
+  const { mutate } = useMutation({
+    mutationFn: (value) => updataAvatarApi(value),
+    onSuccess: () => {
+      Swal.fire({
+        title: "Cập nhật avatar",
+        text: "cập nhật thành công",
+        icon: "success",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
+    },
+  });
+  const handleUpload = () => {
+    if (file != null) {
+      handleClose();
+      mutate(file);
+    }
+  };
   return (
     <div id="profile">
       <div className="profile-head">
@@ -40,13 +66,13 @@ const OrderAvatar = ({ data }) => {
           <Modal.Title>Cập nhật avatar</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <input type="file" />
+          <input type="file" onChange={(e) => setFile(e.target.files[0])} />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             hủy bỏ
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={handleUpload}>
             Lưu thay đổi
           </Button>
         </Modal.Footer>

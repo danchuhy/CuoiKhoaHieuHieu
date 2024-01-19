@@ -1,5 +1,7 @@
+
 import { GROUP_CODE } from '../constants'
 import fetcher from './fetcher'
+
 
 export const getListUser = async () => {
   try {
@@ -85,6 +87,14 @@ export const getInforUserApi = async(id) =>{
   try {
     const respone = await fetcher.get(`/users/${id}`)
     return  respone.data.content
+  } catch (error) {
+    throw 'Lỗi rồi'
+  }
+}
+export const updataAvatarApi = async (payload) =>{
+  try {
+    const respone = await fetcher.post("/users/upload-avatar",payload)
+    return respone
   } catch (error) {
     throw 'Lỗi rồi'
   }
