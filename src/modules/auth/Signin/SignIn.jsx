@@ -45,33 +45,16 @@ const SignIn = () => {
       if (values.response) {
         setErr(values.response.data.content);
       } else {
+        console.log(values);
         window.location.reload();
         handleSigninContext(values);
         if (values.maLoaiNguoiDung === "USER") {
-          Swal.fire({
-            icon: "success",
-            title: "Đăng ký thành công",
-            showConfirmButton: true,
-            timer: 1500,
-          }).then((result) => {
-            if (result.isConfirmed) {
-              setErr(null);
-              navigate(PATH.HOME);
-            }
-          });
+          setErr(null);
+          navigate(PATH.HOME);
         }
         if (values.maLoaiNguoiDung === "ADMIN") {
-          Swal.fire({
-            icon: "success",
-            title: "Đăng ký thành công",
-            showConfirmButton: true,
-            timer: 1500,
-          }).then((result) => {
-            if (result.isConfirmed) {
-              setErr(null);
-              navigate(PATH.ADMIN);
-            }
-          });
+          setErr(null);
+          navigate("/admin");
         }
       }
     },
@@ -80,7 +63,8 @@ const SignIn = () => {
     },
   });
 
-  const onSubmit = (values) => {
+  const onSubmit = (values, e) => {
+    event.preventDefault();
     handleSignin(values); // {email: '', password: ''}
   };
 
